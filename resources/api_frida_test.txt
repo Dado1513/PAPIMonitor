@@ -1,0 +1,2 @@
+android.webkit.WebView,loadUrl
+android.webkit.WebView,evaluateJavascript
