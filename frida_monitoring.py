@@ -3,6 +3,8 @@ import os
 import logging
 import sys
 import time
+from adb import ADB
+from androguard.core.bytecodes.apk import APK
 
 if 'LOG_LEVEL' in os.environ:
     log_level = os.environ['LOG_LEVEL']
@@ -19,7 +21,6 @@ file_log_frida = os.path.join(os.getcwd(), "logs")
 
 
 def on_message(message, data):
-    print((file_log_frida))
     file_log = open(file_log_frida, "a")
     if message['type'] == 'send':
         file_log.write(str(message["payload"])+"\n")
@@ -27,6 +28,30 @@ def on_message(message, data):
     elif message['type'] == 'error':
         file_log.write(str(message["stack"])+"\n")
     file_log.close()
+
+
+def push_and_start_frida_server(adb: ADB):
+    """
+    Push and start adb server on device
+    Parameters
+    ----------
+    adb
+
+    Returns
+    -------
+
+    """
+    frida_server = os.path.join(os.getcwd(), "resources", "frida-server", "frida-server")
+
+    adb.execute(['root'])
+    logger.info("Push frida server")
+    adb.push_file(frida_server, "/data/local/tmp")
+    logger.info("Add execution permission to frida-server")
+    chmod_frida = ["chmod 755 /data/local/tmp/frida-server"]
+    adb.shell(chmod_frida)
+    logger.info("Start frida server")
+    start_frida = ["cd /data/local/tmp && ./frida-server &"]
+    adb.shell(start_frida, is_async=True)
 
 
 def read_api_to_monitoring(file_api_to_monitoring):
@@ -55,12 +80,19 @@ def create_script_frida(list_api_to_monitoring: list, path_frida_script_template
     return script_frida
 
 
-def main():
+def main(app_path, execution_time, file_api_to_monitoring):
     # app already installed and frida already running on device
-    package_name = sys.argv[1]
-    execution_time = int(sys.argv[2])
-    file_api_to_monitoring = sys.argv[3]
+
     list_api_to_monitoring = read_api_to_monitoring(file_api_to_monitoring)
+    app = APK(app_path)
+    package_name = app.get_package()
+    logger.info("Start ADB")
+    adb = ADB()
+    # adb.kill_server()
+    logger.info("Install APP")
+    adb.install_app(app_path)
+    logger.info("Frida Initialize")
+    push_and_start_frida_server(adb)
 
     pid = None
     device = None
@@ -100,6 +132,12 @@ def main():
 
 if __name__ == "__main__":
     if len(sys.argv) == 4:
-        main()
+        app_path = sys.argv[1]
+        if os.path.exists(app_path):
+            execution_time = int(sys.argv[2])
+            file_api_to_monitoring = sys.argv[3]
+            main(app_path, execution_time, file_api_to_monitoring)
+        else:
+            print("File {} not found".format(app_path))
     else:
         print("[*] Usage: python frida_monitoring.py com.example.app 5000 api.txt")

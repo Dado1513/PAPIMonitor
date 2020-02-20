@@ -21,9 +21,10 @@ Java.perform(function() {
             argLog += ']';
             value_parameters += "]";
 
+
             var script = "var ret = this." + func + '(' + args.join(',') + ") || '';\n"
-                + "send('className:"+ cn +", method:"+ func +", parameters:'+JSON.stringify("+value_parameters+"));\n"
-            + "return ret;";
+                + "send({className:'"+ cn +"', method:'"+ func +"', parameters: "+value_parameters+"});\n"
+                + "return ret;";
             args.push(script);
             clazz[func].overload.apply(this, parameters).implementation = Function.apply(null, args);
         }
