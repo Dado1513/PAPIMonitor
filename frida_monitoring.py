@@ -20,14 +20,14 @@ logging.basicConfig(format='%(asctime)s> [%(levelname)s][%(name)s][%(funcName)s(
 file_log_frida = os.path.join(os.getcwd(), "logs")
 
 
+
 def on_message(message, data):
     file_log = open(file_log_frida, "a")
     if message['type'] == 'send':
-        file_log.write(str(message["payload"])+"\n")
-
-    elif message['type'] == 'error':
-        file_log.write(str(message["stack"])+"\n")
+        if "Error" not in str(message["payload"]):
+            file_log.write(str(message["payload"]) + "\n")
     file_log.close()
+
 
 
 def push_and_start_frida_server(adb: ADB):
@@ -43,7 +43,12 @@ def push_and_start_frida_server(adb: ADB):
     """
     frida_server = os.path.join(os.getcwd(), "resources", "frida-server", "frida-server")
 
-    adb.execute(['root'])
+    try:
+        adb.execute(['root'])
+    except Exception as e:
+        adb.kill_server()
+        logger.error("Error on adb {}".format(e))
+
     logger.info("Push frida server")
     adb.push_file(frida_server, "/data/local/tmp")
     logger.info("Add execution permission to frida-server")
