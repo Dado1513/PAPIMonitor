@@ -88,7 +88,6 @@ def main(app_path, execution_time, file_api_to_monitoring):
     package_name = app.get_package()
     logger.info("Start ADB")
     adb = ADB()
-    # adb.kill_server()
     logger.info("Install APP")
     adb.install_app(app_path)
     logger.info("Frida Initialize")
