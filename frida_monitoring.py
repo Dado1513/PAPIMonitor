@@ -20,7 +20,6 @@ logging.basicConfig(format='%(asctime)s> [%(levelname)s][%(name)s][%(funcName)s(
 file_log_frida = os.path.join(os.getcwd(), "logs")
 
 
-
 def on_message(message, data):
     file_log = open(file_log_frida, "a")
     if message['type'] == 'send':
