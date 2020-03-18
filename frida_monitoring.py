@@ -84,7 +84,7 @@ def create_script_frida(list_api_to_monitoring: list, path_frida_script_template
     return script_frida
 
 
-def main(app_path, execution_time, file_api_to_monitoring):
+def main(app_path, file_api_to_monitoring):
     # app already installed and frida already running on device
 
     list_api_to_monitoring = read_api_to_monitoring(file_api_to_monitoring)
@@ -127,9 +127,8 @@ def main(app_path, execution_time, file_api_to_monitoring):
     device.resume(pid)
     start = time.time()
     while True:
-        end = time.time()
-        if int(end - start) > execution_time:
-            session.detach()
+        command = input("Press 0 to exit")
+        if command == "0":
             break
 
 
@@ -137,10 +136,9 @@ if __name__ == "__main__":
     if len(sys.argv) == 4:
         app_path = sys.argv[1]
         if os.path.exists(app_path):
-            execution_time = int(sys.argv[2])
             file_api_to_monitoring = sys.argv[3]
-            main(app_path, execution_time, file_api_to_monitoring)
+            main(app_path, file_api_to_monitoring)
         else:
             print("File {} not found".format(app_path))
     else:
-        print("[*] Usage: python frida_monitoring.py com.example.app 5000 api.txt")
+        print("[*] Usage: python frida_monitoring.py com.example.app api.txt")
