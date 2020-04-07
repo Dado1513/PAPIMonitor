@@ -49,7 +49,10 @@ def push_and_start_frida_server(adb: ADB):
         logger.error("Error on adb {}".format(e))
 
     logger.info("Push frida server")
-    adb.push_file(frida_server, "/data/local/tmp")
+    try:
+        adb.push_file(frida_server, "/data/local/tmp")
+    except Exception as e:
+        pass
     logger.info("Add execution permission to frida-server")
     chmod_frida = ["chmod 755 /data/local/tmp/frida-server"]
     adb.shell(chmod_frida)
@@ -137,6 +140,7 @@ if __name__ == "__main__":
         app_path = sys.argv[1]
         if os.path.exists(app_path):
             file_api_to_monitoring = sys.argv[3]
+            print(file_api_to_monitoring)
             main(app_path, file_api_to_monitoring)
         else:
             print("File {} not found".format(app_path))
