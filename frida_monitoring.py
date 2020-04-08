@@ -11,7 +11,6 @@ if 'LOG_LEVEL' in os.environ:
 else:
     log_level = logging.INFO
 
-LOCAL_URL_EMULATOR = "http://127.0.0.1:21212"
 logger = logging.getLogger(__name__)
 logging.basicConfig(format='%(asctime)s> [%(levelname)s][%(name)s][%(funcName)s()] %(message)s',
                         datefmt='%d/%m/%Y %H:%M:%S', level=log_level)
@@ -25,6 +24,7 @@ def on_message(message, data):
     if message['type'] == 'send':
         if "Error" not in str(message["payload"]):
             file_log.write(str(message["payload"]) + "\n")
+            print(str(message ["payload"]))
     file_log.close()
 
 
@@ -62,7 +62,6 @@ def push_and_start_frida_server(adb: ADB):
 
 
 def read_api_to_monitoring(file_api_to_monitoring):
-
     if os.path.exists(file_api_to_monitoring):
         list_api_to_monitoring = []
         content = []
@@ -87,18 +86,24 @@ def create_script_frida(list_api_to_monitoring: list, path_frida_script_template
     return script_frida
 
 
-def main(app_path, file_api_to_monitoring):
-    # app already installed and frida already running on device
+def main(app_path, file_api_to_monitoring, app_to_install=True):
 
     list_api_to_monitoring = read_api_to_monitoring(file_api_to_monitoring)
-    app = APK(app_path)
-    package_name = app.get_package()
-    logger.info("Start ADB")
-    adb = ADB()
-    logger.info("Install APP")
-    adb.install_app(app_path)
-    logger.info("Frida Initialize")
-    push_and_start_frida_server(adb)
+    
+    if app_to_install: 
+        app = APK(app_path)
+        package_name = app.get_package()
+        logger.info("Start ADB")
+        adb = ADB()
+        logger.info("Install APP")
+        adb.install_app(app_path)
+        logger.info("Frida Initialize")
+        push_and_start_frida_server(adb)
+    else:
+        package_name = app_path
+        adb = ADB()
+        logger.info("Frida Initialize")
+        push_and_start_frida_server(adb)
 
     pid = None
     device = None
@@ -109,6 +114,9 @@ def main(app_path, file_api_to_monitoring):
         session = device.attach(pid)
     except Exception as e:
         logger.error("Error {}".format(e))
+        device = frida.get_usb_device()
+        pid = device.spawn([package_name])
+        session = device.attach(pid)
 
     logger.info("Succesfully attacched frida to app")
 
@@ -130,19 +138,24 @@ def main(app_path, file_api_to_monitoring):
     device.resume(pid)
     start = time.time()
     while True:
-        command = input("Press 0 to exit")
+        command = input("Press 0 to exit\n  ")
         if command == "0":
             break
 
 
 if __name__ == "__main__":
     if len(sys.argv) == 4:
-        app_path = sys.argv[1]
+        app_path = sys.argv[2]
         if os.path.exists(app_path):
             file_api_to_monitoring = sys.argv[3]
-            print(file_api_to_monitoring)
-            main(app_path, file_api_to_monitoring)
+            main(app_path, file_api_to_monitoring, app_to_install=True)
         else:
             print("File {} not found".format(app_path))
+    elif len(sys.argv) == 3:
+        package_name = sys.argv[1]
+        file_api_to_monitoring = sys.argv[2]
+        main(package_name, file_api_to_monitoring, app_to_install=False)
+
     else:
-        print("[*] Usage: python frida_monitoring.py com.example.app api.txt")
+        print("[*] Usage: python frida_monitoring.py -f app.apk api.txt")
+        print("[*] Usage: python frida_monitoring.py package.name api.txt")
