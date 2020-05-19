@@ -1,0 +1,12 @@
+com.google.android.gms.ads.AdView,loadAd
+com.google.android.gms.ads.MobileAds,initialize
+com.google.firebase.analytics.FirebaseAnalytics,logEvent
+android.widget.Toast,show
+com.example.analyticsapptesting.MainActivity,somma
+com.facebook.appevents.AppEventsLogger,logEvent
+com.facebook.appevents.AppEventQueue,persistToDisk
+com.facebook.appevents.AppEventQueue,flushAndWait
+com.facebook.appevents.AppEventQueue,add
+com.facebook.appevents.AppEventQueue,sendEventsToServer
+com.facebook.appevents.AppEventQueue,buildRequestForSession
+com.facebook.appevents.AppEventQueue,handleResponse
