@@ -108,10 +108,12 @@ def main(app_path, file_api_to_monitoring, app_to_install=True):
     pid = None
     device = None
     session = None
+    
     try:
         device = frida.get_usb_device()
         pid = device.spawn([package_name])
         session = device.attach(pid)
+    
     except Exception as e:
         logger.error("Error {}".format(e))
         device = frida.get_usb_device()
