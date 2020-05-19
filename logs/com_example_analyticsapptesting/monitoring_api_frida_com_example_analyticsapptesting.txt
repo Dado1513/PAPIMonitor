@@ -1,0 +1,15 @@
+{'className': 'com.google.firebase.analytics.FirebaseAnalytics', 'method': 'logEvent', 'parameters': ['select_content', {'$handle': '0x2005ae', '$weakRef': 38}]}
+{'className': 'com.google.firebase.analytics.FirebaseAnalytics', 'method': 'logEvent', 'parameters': ['select_content', {'$handle': '0x2005ae', '$weakRef': 38}]}
+{'className': 'com.example.analyticsapptesting.MainActivity', 'method': 'somma', 'parameters': []}
+{'className': 'com.google.firebase.analytics.FirebaseAnalytics', 'method': 'logEvent', 'parameters': ['select_content', {'$handle': '0x2005b2', '$weakRef': 38}]}
+
+{'className': 'com.example.analyticsapptesting.MainActivity', 'method': 'somma', 'parameters': []}
+3
+{'className': 'com.google.firebase.analytics.FirebaseAnalytics', 'method': 'logEvent', 'parameters': ['select_content', {'$handle': '0x2005ae', '$weakRef': 38}]}
+{'Return': ''}
+{'className': 'com.example.analyticsapptesting.MainActivity', 'method': 'somma', 'parameters': []}
+{'Return': 3}
+{'className': 'com.google.firebase.analytics.FirebaseAnalytics', 'method': 'logEvent', 'parameters': ['select_content', {'$handle': '0x2005aa', '$weakRef': 38}], 'Return': ''}
+{'Return': ''}
+{'className': 'com.example.analyticsapptesting.MainActivity', 'method': 'somma', 'parameters': [], 'Return': 3}
+{'Return': 3}

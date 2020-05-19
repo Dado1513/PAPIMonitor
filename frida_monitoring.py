@@ -138,10 +138,10 @@ def main(app_path, file_api_to_monitoring, app_to_install=True):
     device.resume(pid)
     start = time.time()
     while True:
-        command = input("Press 0 to exit\n  ")
+        command = input("Press 0 to exit\n\n")
         if command == "0":
             break
-
+    
 
 if __name__ == "__main__":
     if len(sys.argv) == 4:

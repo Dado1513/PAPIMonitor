@@ -2,3 +2,4 @@ com.google.android.gms.ads.AdView,loadAd
 com.google.android.gms.ads.MobileAds,initialize
 com.google.firebase.analytics.FirebaseAnalytics,logEvent
 android.widget.Toast,show
+com.example.analyticsapptesting.MainActivity,somma

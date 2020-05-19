@@ -23,7 +23,7 @@ Java.perform(function () {
 
 
             var script = "var ret = this." + func + '(' + args.join(',') + ") || '';\n"
-                + "send({className:'" + cn + "', method:'" + func + "', parameters: " + value_parameters + "});\n"
+                + "send({className:'" + cn + "', method:'" + func + "', parameters: " + value_parameters + ", return: ret});\n"
                 + "return ret;";
             args.push(script);
             clazz[func].overload.apply(this, parameters).implementation = Function.apply(null, args);
