@@ -5,6 +5,8 @@ import sys
 import time
 from adb import ADB
 from androguard.core.bytecodes.apk import APK
+import json 
+from datetime import datetime
 
 if 'LOG_LEVEL' in os.environ:
     log_level = os.environ['LOG_LEVEL']
@@ -23,8 +25,10 @@ def on_message(message, data):
     file_log = open(file_log_frida, "a")
     if message['type'] == 'send':
         if "Error" not in str(message["payload"]):
-            file_log.write(str(message["payload"]) + "\n")
-            print(str(message ["payload"]))
+            message_new = message["payload"]
+            message_new["time"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+            file_log.write(str(message_new) + "\n")
+            print(str(message_new)+"\n")
     file_log.close()
 
 
@@ -140,7 +144,7 @@ def main(app_path, file_api_to_monitoring, app_to_install=True):
     device.resume(pid)
     start = time.time()
     while True:
-        command = input("Press 0 to exit\n\n")
+        command = input("Press 0 to exit\n\nApi Invoked:\n")
         if command == "0":
             break
     
