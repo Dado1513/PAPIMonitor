@@ -33,6 +33,14 @@ def on_message(message, data):
     file_log.close()
 
 
+def on_message_api_monitor(message, data):
+    file_log = open(file_log_frida, "a")
+
+    if message['type'] == 'send':
+        file_log.write(str(message["payload"]) + "\n")
+        logger.info(message["payload"])
+    file_log.close()
+
 
 def push_and_start_frida_server(adb: ADB):
     """
@@ -120,7 +128,7 @@ def create_adb_and_start_frida(package_name):
 
 
 
-def main(app_path, list_api_to_monitoring, app_to_install=True, store_script=False, api_monitor=False):
+def main(app_path, list_api_to_monitoring, app_to_install=True, store_script=False, api_monitor=True):
     
     print(list_file_api_to_monitoring)  
     # return
@@ -149,12 +157,14 @@ def main(app_path, list_api_to_monitoring, app_to_install=True, store_script=Fal
     logger.info("Succesfully attacched frida to app")
 
     global file_log_frida
-    if not api_monitor:
-        dir_frida = os.path.join(file_log_frida, package_name.replace(".","_"))
-        if not os.path.exists(dir_frida):
-            os.makedirs(dir_frida)
+    dir_frida = os.path.join(file_log_frida, package_name.replace(".","_"))
+    if not os.path.exists(dir_frida):
+        os.makedirs(dir_frida)
 
-        file_log_frida = os.path.join(dir_frida,  "monitoring_api_frida_{}.txt".format(package_name.replace(".", "_")))
+    file_log_frida = os.path.join(dir_frida,  "monitoring_api_frida_{}.txt".format(package_name.replace(".", "_")))
+
+
+    if not api_monitor:
 
         script_frida = create_script_frida(list_api_to_monitoring,
                                         os.path.join(os.getcwd(), "frida_scripts", "frida_script_template.js"))
@@ -174,16 +184,21 @@ def main(app_path, list_api_to_monitoring, app_to_install=True, store_script=Fal
             if command == "0":
                 break
     else:
+        
         with open(os.path.join(os.getcwd(), "frida_script_v2", "default.js")) as f:
             frida_code = f.read()
         
         script = session.create_script(frida_code)
-        #script.set_log_handler(log_handler)
+        script.on("message", on_message_api_monitor)
         script.load()
+        device.resume(pid)
         api = script.exports
         with open(os.path.join(os.getcwd(), "frida_script_v2","api_monitor.json")) as f:
             api_monitor = json.load(f)
-        api.apimonitor(api_monitor)
+        category = "Database"
+        api_filter = [e for e in api_monitor if e['Category'] == category]
+        api_to_hook = json.loads(json.dumps(api_filter))
+        api.apimonitor(api_to_hook)
         while True:
             command = input("Press 0 to exit\n\nApi Invoked:\n")
             if command == "0":
