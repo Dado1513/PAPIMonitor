@@ -7,6 +7,7 @@ from adb import ADB
 from androguard.core.bytecodes.apk import APK
 import json 
 from datetime import datetime
+import argparse
 
 if 'LOG_LEVEL' in os.environ:
     log_level = os.environ['LOG_LEVEL']
@@ -90,9 +91,17 @@ def create_script_frida(list_api_to_monitoring: list, path_frida_script_template
     return script_frida
 
 
-def main(app_path, file_api_to_monitoring, app_to_install=True):
+def create_list_api_from_file(list_file_api_to_monitoring):
+    list_api_to_monitoring_complete = list()
+    for file_api_to_monitoring in list_file_api_to_monitoring:
+        list_api_to_monitoring = read_api_to_monitoring(file_api_to_monitoring)
+        list_api_to_monitoring_complete.extend(list_api_to_monitoring)
+    return list_api_to_monitoring
 
-    list_api_to_monitoring = read_api_to_monitoring(file_api_to_monitoring)
+def main(app_path, list_api_to_monitoring, app_to_install=True):
+    
+    print(list_file_api_to_monitoring)  
+    # return
     
     if app_to_install: 
         app = APK(app_path)
@@ -147,21 +156,62 @@ def main(app_path, file_api_to_monitoring, app_to_install=True):
         command = input("Press 0 to exit\n\nApi Invoked:\n")
         if command == "0":
             break
-    
+
+def get_cmd_args(args: list = None):
+    """
+        Parse and return the command line parameters needed for the script execution.
+            :param args: List of arguments to be parsed (by default sys.argv is used).
+            :return: The command line needed parameters.
+    """
+
+    parser = argparse.ArgumentParser(
+        prog='python dynamic API monitoring based on Frida',
+        description='Start dynamic API monitoring'
+    )
+
+    parser.add_argument('-f', '--file-apk', type=str, metavar='APK',
+                        help='file apk to analyze')
+    parser.add_argument('-p', '--package-name', type=str, metavar='PACKAGENAME',
+                        help='Package Name of app to analyze')
+    parser.add_argument('--list-api', type=str, metavar='API', nargs='+',
+                        help='List of api file to monitoring, \ne.g., file_api.txt')
+    parser.add_argument("--api", type=str, 
+                        help="Single API to Monitoring, \ne.g., android.webkit.WebView,loadUrl")
+
+    return parser.parse_args(args)
+
 
 if __name__ == "__main__":
-    if len(sys.argv) == 4:
-        app_path = sys.argv[2]
+    
+    arguments = get_cmd_args()
+    if arguments.file_apk is not None:
+        app_path = arguments.file_apk
         if os.path.exists(app_path):
-            file_api_to_monitoring = sys.argv[3]
-            main(app_path, file_api_to_monitoring, app_to_install=True)
+            if arguments.list_api is not None:
+                list_file_api_to_monitoring = arguments.list_api
+                list_api_to_monitoring = create_list_api_from_file(list_file_api_to_monitoring)
+                main(app_path, list_api_to_monitoring, app_to_install=True)
+            elif arguments.api is not None:
+                list_api_to_monitoring = []
+                list_api_to_monitoring.append((arguments.api .split(",")[0], arguments.api.split(",")[1]))
+                main(app_path, list_api_to_monitoring, app_to_install=True)
+            else:
+                arguments.print_help()
         else:
             print("File {} not found".format(app_path))
-    elif len(sys.argv) == 3:
-        package_name = sys.argv[1]
-        file_api_to_monitoring = sys.argv[2]
-        main(package_name, file_api_to_monitoring, app_to_install=False)
-
+    elif arguments.package_name is not None:
+        package_name = arguments.package_name
+        if arguments.list_api is not None:
+            list_file_api_to_monitoring = arguments.list_api
+            list_api_to_monitoring = create_list_api_from_file(list_file_api_to_monitoring)
+            main(package_name, list_api_to_monitoring, app_to_install=False)
+        elif arguments.api is not None:
+            list_api_to_monitoring = []
+            list_api_to_monitoring.append((arguments.api .split(",")[0], arguments.api.split(",")[1]))
+            main(package_name, list_api_to_monitoring, app_to_install=False)
+        else:
+            arguments.print_help()
+        
     else:
-        print("[*] Usage: python frida_monitoring.py -f app.apk api.txt")
-        print("[*] Usage: python frida_monitoring.py package.name api.txt")
+        print("[*] Usage: python frida_monitoring.py -f file_api.txt file_api_2.txt")
+        print("[*] Usage: python frida_monitoring.py package.name file_api.txt file_api_2.txt")
