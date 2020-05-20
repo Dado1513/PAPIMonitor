@@ -128,7 +128,7 @@ def create_adb_and_start_frida(package_name):
 
 
 
-def main(app_path, list_api_to_monitoring, app_to_install=True, store_script=False, api_monitor=True):
+def main(app_path, list_api_to_monitoring, app_to_install=True, store_script=False, api_monitor=False):
     
     print(list_file_api_to_monitoring)  
     # return
