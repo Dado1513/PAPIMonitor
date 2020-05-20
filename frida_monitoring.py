@@ -118,7 +118,9 @@ def create_adb_and_start_frida(package_name):
     push_and_start_frida_server(adb)
     return package_name
 
-def main(app_path, list_api_to_monitoring, app_to_install=True, store_script=False):
+
+
+def main(app_path, list_api_to_monitoring, app_to_install=True, store_script=False, api_monitor=False):
     
     print(list_file_api_to_monitoring)  
     # return
@@ -147,30 +149,45 @@ def main(app_path, list_api_to_monitoring, app_to_install=True, store_script=Fal
     logger.info("Succesfully attacched frida to app")
 
     global file_log_frida
+    if not api_monitor:
+        dir_frida = os.path.join(file_log_frida, package_name.replace(".","_"))
+        if not os.path.exists(dir_frida):
+            os.makedirs(dir_frida)
 
-    dir_frida = os.path.join(file_log_frida, package_name.replace(".","_"))
-    if not os.path.exists(dir_frida):
-        os.makedirs(dir_frida)
+        file_log_frida = os.path.join(dir_frida,  "monitoring_api_frida_{}.txt".format(package_name.replace(".", "_")))
 
-    file_log_frida = os.path.join(dir_frida,  "monitoring_api_frida_{}.txt".format(package_name.replace(".", "_")))
+        script_frida = create_script_frida(list_api_to_monitoring,
+                                        os.path.join(os.getcwd(), "frida_scripts", "frida_script_template.js"))
+        if store_script:
+            file_script_frida = os.path.join(dir_frida,  "script_{}.js".format(package_name.replace(".", "_")))
+            with open(file_script_frida, "w") as file:
+                file.write(script_frida)
+        
+        script = session.create_script(script_frida.strip().replace("\n", ""))
+        script.on("message", on_message)
+        script.load()
 
-    script_frida = create_script_frida(list_api_to_monitoring,
-                                       os.path.join(os.getcwd(), "frida_scripts", "frida_script_template.js"))
-    if store_script:
-        file_script_frida = os.path.join(dir_frida,  "script_{}.js".format(package_name.replace(".", "_")))
-        with open(file_script_frida, "w") as file:
-            file.write(script_frida)
-    
-    script = session.create_script(script_frida.strip().replace("\n", ""))
-    script.on("message", on_message)
-    script.load()
-
-    device.resume(pid)
-    start = time.time()
-    while True:
-        command = input("Press 0 to exit\n\nApi Invoked:\n")
-        if command == "0":
-            break
+        device.resume(pid)
+        start = time.time()
+        while True:
+            command = input("Press 0 to exit\n\nApi Invoked:\n")
+            if command == "0":
+                break
+    else:
+        with open(os.path.join(os.getcwd(), "frida_script_v2", "default.js")) as f:
+            frida_code = f.read()
+        
+        script = session.create_script(frida_code)
+        #script.set_log_handler(log_handler)
+        script.load()
+        api = script.exports
+        with open(os.path.join(os.getcwd(), "frida_script_v2","api_monitor.json")) as f:
+            api_monitor = json.load(f)
+        api.apimonitor(api_monitor)
+        while True:
+            command = input("Press 0 to exit\n\nApi Invoked:\n")
+            if command == "0":
+                break
 
 def get_cmd_args(args: list = None):
     """
