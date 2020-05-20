@@ -64,6 +64,7 @@ def push_and_start_frida_server(adb: ADB):
     logger.info("Start frida server")
     start_frida = ["cd /data/local/tmp && ./frida-server &"]
     adb.shell(start_frida, is_async=True)
+    time.sleep(4)
 
 
 def read_api_to_monitoring(file_api_to_monitoring):
