@@ -29,7 +29,7 @@ def on_message(message, data):
             message_new = message["payload"]
             message_new["time"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             file_log.write(str(message_new) + "\n")
-            print(str(message_new)+"\n")
+            logger.info(str(message_new)+"\n")
     file_log.close()
 
 
@@ -96,27 +96,36 @@ def create_list_api_from_file(list_file_api_to_monitoring):
     for file_api_to_monitoring in list_file_api_to_monitoring:
         list_api_to_monitoring = read_api_to_monitoring(file_api_to_monitoring)
         list_api_to_monitoring_complete.extend(list_api_to_monitoring)
-    return list_api_to_monitoring
+    return list_api_to_monitoring_complete
 
-def main(app_path, list_api_to_monitoring, app_to_install=True):
+
+def install_app_and_install_frida(app_path):
+    app = APK(app_path)
+    package_name = app.get_package()
+    logger.info("Start ADB")
+    adb = ADB()
+    logger.info("Install APP")
+    adb.install_app(app_path)
+    logger.info("Frida Initialize")
+    push_and_start_frida_server(adb)
+    return package_name
+
+def create_adb_and_start_frida(package_name):
+    logger.info(f"App Already Installed, start to monitoring ${package_name}")
+    adb = ADB()
+    logger.info("Frida Initialize")
+    push_and_start_frida_server(adb)
+    return package_name
+
+def main(app_path, list_api_to_monitoring, app_to_install=True, store_script=False):
     
     print(list_file_api_to_monitoring)  
     # return
     
-    if app_to_install: 
-        app = APK(app_path)
-        package_name = app.get_package()
-        logger.info("Start ADB")
-        adb = ADB()
-        logger.info("Install APP")
-        adb.install_app(app_path)
-        logger.info("Frida Initialize")
-        push_and_start_frida_server(adb)
+    if app_to_install:
+        package_name = install_app_and_install_frida(app_path)
     else:
-        package_name = app_path
-        adb = ADB()
-        logger.info("Frida Initialize")
-        push_and_start_frida_server(adb)
+        package_name = create_adb_and_start_frida(app_path)
 
     pid = None
     device = None
@@ -126,12 +135,13 @@ def main(app_path, list_api_to_monitoring, app_to_install=True):
         device = frida.get_usb_device()
         pid = device.spawn([package_name])
         session = device.attach(pid)
-    
     except Exception as e:
+        
         logger.error("Error {}".format(e))
         device = frida.get_usb_device()
         pid = device.spawn([package_name])
         session = device.attach(pid)
+    
 
     logger.info("Succesfully attacched frida to app")
 
@@ -145,7 +155,11 @@ def main(app_path, list_api_to_monitoring, app_to_install=True):
 
     script_frida = create_script_frida(list_api_to_monitoring,
                                        os.path.join(os.getcwd(), "frida_scripts", "frida_script_template.js"))
-
+    if store_script:
+        file_script_frida = os.path.join(dir_frida,  "script_{}.js".format(package_name.replace(".", "_")))
+        with open(file_script_frida, "w") as file:
+            file.write(script_frida)
+    
     script = session.create_script(script_frida.strip().replace("\n", ""))
     script.on("message", on_message)
     script.load()
@@ -178,6 +192,8 @@ def get_cmd_args(args: list = None):
     parser.add_argument("--api", type=str, 
                         help="Single API to Monitoring, \ne.g., android.webkit.WebView,loadUrl")
 
+    parser.add_argument("--store-script", type=bool, default=False)
+
     return parser.parse_args(args)
 
 
@@ -187,31 +203,33 @@ if __name__ == "__main__":
     if arguments.file_apk is not None:
         app_path = arguments.file_apk
         if os.path.exists(app_path):
+            logger.info("Start Frida API Monitoring with App Installation")
             if arguments.list_api is not None:
                 list_file_api_to_monitoring = arguments.list_api
                 list_api_to_monitoring = create_list_api_from_file(list_file_api_to_monitoring)
-                main(app_path, list_api_to_monitoring, app_to_install=True)
+                main(app_path, list_api_to_monitoring, app_to_install=True, store_script=arguments.store_script)
             elif arguments.api is not None:
                 list_api_to_monitoring = []
                 list_api_to_monitoring.append((arguments.api .split(",")[0], arguments.api.split(",")[1]))
-                main(app_path, list_api_to_monitoring, app_to_install=True)
+                main(app_path, list_api_to_monitoring, app_to_install=True, store_script=arguments.store_script)
             else:
                 arguments.print_help()
         else:
             print("File {} not found".format(app_path))
     elif arguments.package_name is not None:
+        logger.info("Start Frida API Monitoring without App Installation")
         package_name = arguments.package_name
         if arguments.list_api is not None:
             list_file_api_to_monitoring = arguments.list_api
             list_api_to_monitoring = create_list_api_from_file(list_file_api_to_monitoring)
-            main(package_name, list_api_to_monitoring, app_to_install=False)
+            main(package_name, list_api_to_monitoring, app_to_install=False, store_script=arguments.store_script)
         elif arguments.api is not None:
             list_api_to_monitoring = []
             list_api_to_monitoring.append((arguments.api .split(",")[0], arguments.api.split(",")[1]))
-            main(package_name, list_api_to_monitoring, app_to_install=False)
+            main(package_name, list_api_to_monitoring, app_to_install=False, store_script=arguments.store_script)
         else:
             arguments.print_help()
         
     else:
-        print("[*] Usage: python frida_monitoring.py -f file_api.txt file_api_2.txt")
-        print("[*] Usage: python frida_monitoring.py package.name file_api.txt file_api_2.txt")
+        print("[*] Usage:  python frida_monitoring.py --file-apk app.apk --list-api api_personalized_1.txt api_personalized_2.txt")
+        print("[*] Usage: python frida_monitoring.py --package-name com.example.analyticsapptesting --list-api api_personalized_1.txt api_personalized_2.txt")
