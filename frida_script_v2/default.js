@@ -320,7 +320,7 @@ rpc.exports = {
                 if (!to_print.result) to_print.result = undefined
                 if (!to_print.returnValue) to_print.returnValue = undefined
   
-                send('API Monitor - ' + JSON.stringify(to_print));
+                send(JSON.stringify(to_print));
                 return realRetval;
               });
             } // end javadynamichook
