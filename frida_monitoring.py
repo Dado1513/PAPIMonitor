@@ -195,21 +195,26 @@ def main_v2(app_path, list_api_to_monitoring=None, app_to_install=True, store_sc
     api = script.exports
     
     
-    with open(os.path.join(os.getcwd(), "frida_script_v2","api_monitor.json")) as f:
-        api_monitor = json.load(f)
-    
+    api_monitor = []
     if list_api_to_monitoring is not None:
         json_custom = create_json_custom(list_api_to_monitoring)
         api_monitor.append(json_custom)
         category.append("Custom")
     
-    if "ALL" not in category:
-        api_filter = [e for e in api_monitor if e['Category'] in category] 
-        api_to_hook = json.loads(json.dumps(api_filter))
-        api.apimonitor(api_to_hook)
+    print(api_monitor)
+
+    if "NONE" not in category:
+        with open(os.path.join(os.getcwd(), "frida_script_v2","api_monitor.json")) as f:
+            api_monitor = api_monitor + json.load(f)
+    
+        if "ALL" not in category:
+            api_filter = [e for e in api_monitor if e['Category'] in category] 
+            api_to_hook = json.loads(json.dumps(api_filter))
+            api.apimonitor(api_to_hook)
+        else:
+            api.apimonitor(api_monitor)
     else:
         api.apimonitor(api_monitor)
-    
 
     
     while True:
@@ -306,7 +311,7 @@ def get_cmd_args(args: list = None):
     parser.add_argument('--filter', type=str, nargs="+", choices=["Device Data", "Device Info", "SMS", "System Manager", 
                                                                     "Base64 encode/decode", "Dex Class Loader","Network", 
                                                                     "Crypto", "Crypto - Hash", "Binder", "IPC", "Database", "SharedPreferences", "WebView",
-                                                                    "Java Native Interface", "Command", "Process", "FileSytem - Java", "ALL"], default=["ALL"])
+                                                                    "Java Native Interface", "Command", "Process", "FileSytem - Java", "ALL","NONE"], default=["NONE"])
     parser.add_argument("--store-script", type=bool, default=False)
 
     return parser.parse_args(args)
