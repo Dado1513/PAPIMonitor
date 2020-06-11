@@ -11,12 +11,12 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getProvider";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getProvider.apply(this, arguments);
         };
         // //hook getCurrentLocation
         // locationManager.getCurrentLocation.implementation = function() {
-        //     send("call " + cn + "->getCurrentLocation");
+        //     console.log("call " + cn + "->getCurrentLocation");
         //     return this.getCurrentLocation.apply(this, arguments);
         // };
         //hook getLastLocation
@@ -25,7 +25,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getBestProvider";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getBestProvider.apply(this, arguments);
         };
 
@@ -34,7 +34,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getLastKnownLocation";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getLastKnownLocation.apply(this, arguments);
         };
 
@@ -43,7 +43,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "requestLocationUpdates";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.requestLocationUpdates.overloads[0].apply(this, arguments);
         };
 
@@ -52,7 +52,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "requestLocationUpdates";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.requestLocationUpdates.overloads[1].apply(this, arguments);
         };
 
@@ -61,7 +61,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "requestLocationUpdates";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.requestLocationUpdates.overloads[2].apply(this, arguments);
         };
 
@@ -70,7 +70,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "requestLocationUpdates";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.requestLocationUpdates.overloads[3].apply(this, arguments);
         };
 
@@ -79,7 +79,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "addGpsStatusListener";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.addGpsStatusListener.apply(this, arguments);
         };
 
@@ -88,7 +88,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "addNmeaListener";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.addNmeaListener.overloads[0].apply(this, arguments);
         };
 
@@ -97,7 +97,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "addProximityAlert";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.addProximityAlert.apply(this, arguments);
         };
 
@@ -106,7 +106,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getProviders";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getProviders.overloads[0].apply(this, arguments);
         };
         locationManager.getProviders.overloads[1].implementation = function(dest) {
@@ -114,7 +114,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getProviders";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getProviders.overloads[1].apply(this, arguments);
         };
 
@@ -123,7 +123,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "isProviderEnabled";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.isProviderEnabled.apply(this, arguments);
         };
 
@@ -132,7 +132,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "requestSingleUpdate";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.requestSingleUpdate.overloads[0].apply(this, arguments);
         };
         locationManager.requestSingleUpdate.overloads[1].implementation = function(dest) {
@@ -140,7 +140,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "requestSingleUpdate";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.requestSingleUpdate.overloads[1].apply(this, arguments);
         };
         locationManager.requestSingleUpdate.overloads[2].implementation = function(dest) {
@@ -148,7 +148,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "requestSingleUpdate";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.requestSingleUpdate.overloads[2].apply(this, arguments);
         };
         locationManager.requestSingleUpdate.overloads[3].implementation = function(dest) {
@@ -156,7 +156,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "requestSingleUpdate";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.requestSingleUpdate.overloads[3].apply(this, arguments);
         };
 
@@ -165,7 +165,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "setTestProviderEnabled";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.setTestProviderEnabled.apply(this, arguments);
         };
     }

@@ -10,7 +10,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "showInputMethodAndSubtypeEnabler";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.showInputMethodAndSubtypeEnabler.apply(this, arguments);
         };
     }

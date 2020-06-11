@@ -10,7 +10,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getByName";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getByName.apply(this, arguments);
         };
 
@@ -19,7 +19,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getDisplayName";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getDisplayName.apply(this, arguments);
         };
 
@@ -28,7 +28,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getInetAddresses";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getInetAddresses.apply(this, arguments);
         };
     }

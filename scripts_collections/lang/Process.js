@@ -10,7 +10,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "destroy";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.destroy.apply(this, arguments);
         };
 
@@ -19,7 +19,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getInputStream";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getInputStream.apply(this, arguments);
         };
 
@@ -28,7 +28,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getOutputStream";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getOutputStream.apply(this, arguments);
         };
 
@@ -37,7 +37,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "waitFor";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.waitFor.overload().apply(this, arguments);
         };
 

@@ -10,7 +10,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "onConfigurationChanged";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.onConfigurationChanged.apply(this, arguments);
         };
 
@@ -19,7 +19,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "onLowMemory";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.onLowMemory.apply(this, arguments);
         };
 
@@ -28,7 +28,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "onStart";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.onStart.apply(this, arguments);
         };
 
@@ -37,7 +37,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "onStartCommand";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.onStartCommand.apply(this, arguments);
         };
     }

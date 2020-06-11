@@ -10,7 +10,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "setAudioSource";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.setAudioSource.apply(this, arguments);
         };
 
@@ -19,7 +19,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "setVideoSource";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.setVideoSource.apply(this, arguments);
         };
     }

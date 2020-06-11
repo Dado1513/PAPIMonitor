@@ -10,7 +10,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "callActivityOnNewIntent";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.callActivityOnNewIntent.overloads[0].apply(this, arguments);
         };
         target.callActivityOnNewIntent.overloads[1].implementation = function(dest) {
@@ -18,7 +18,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "callActivityOnNewIntent";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.callActivityOnNewIntent.overloads[1].apply(this, arguments);
         };
 
@@ -27,7 +27,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "callActivityOnPostCreate";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.callActivityOnPostCreate.overloads[0].apply(this, arguments);
         };
         target.callActivityOnPostCreate.overloads[1].implementation = function(dest) {
@@ -35,7 +35,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "callActivityOnPostCreate";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.callActivityOnPostCreate.overloads[1].apply(this, arguments);
         };
 
@@ -44,7 +44,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "callActivityOnRestoreInstanceState";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.callActivityOnRestoreInstanceState.overloads[0].apply(this, arguments);
         };
         target.callActivityOnRestoreInstanceState.overloads[1].implementation = function(dest) {
@@ -52,7 +52,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "callActivityOnRestoreInstanceState";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.callActivityOnRestoreInstanceState.overloads[1].apply(this, arguments);
         };
 
@@ -61,7 +61,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "callActivityOnSaveInstanceState";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.callActivityOnSaveInstanceState.overloads[0].apply(this, arguments);
         };
         target.callActivityOnSaveInstanceState.overloads[1].implementation = function(dest) {
@@ -69,7 +69,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "callActivityOnSaveInstanceState";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.callActivityOnSaveInstanceState.overloads[1].apply(this, arguments);
         };
 
@@ -78,7 +78,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "callActivityOnStart";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.callActivityOnStart.apply(this, arguments);
         };
 
@@ -87,7 +87,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "callActivityOnUserLeaving";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.callActivityOnUserLeaving.apply(this, arguments);
         };
 
@@ -96,7 +96,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "onException";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.onException.apply(this, arguments);
         };
     }

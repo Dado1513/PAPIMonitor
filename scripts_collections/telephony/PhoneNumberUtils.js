@@ -10,7 +10,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "isVoiceMailNumber";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.isVoiceMailNumber.overloads[0].apply(this, arguments);
         };
 
@@ -19,7 +19,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "isVoiceMailNumber";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.isVoiceMailNumber.overloads[1].apply(this, arguments);
         };
 
@@ -28,7 +28,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "isVoiceMailNumber";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.isVoiceMailNumber.overloads[2].apply(this, arguments);
         };
     }

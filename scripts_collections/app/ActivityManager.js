@@ -11,7 +11,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn +"." + "getRunningAppProcesses";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getRunningAppProcesses.apply(this, arguments);
         };
         //hook forceStopPackage
@@ -20,7 +20,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn +"." + "forceStopPackage";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.forceStopPackage.apply(this, arguments);
         };
         //hook restartPackage
@@ -29,7 +29,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn +"." + "restartPackage";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.restartPackage.apply(this, arguments);
         }
         //hook killBackgroundProcesses
@@ -38,7 +38,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn +"." + "killBackgroundProcesses";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.killBackgroundProcesses.apply(this, arguments);
         }
     }

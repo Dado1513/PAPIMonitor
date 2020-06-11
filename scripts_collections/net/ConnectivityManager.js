@@ -10,7 +10,7 @@ Java.perform(function () {
             myArray[0] = ""  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getNetworkInfo";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getNetworkInfo.overloads[0].apply(this, arguments);
         };
 
@@ -19,7 +19,7 @@ Java.perform(function () {
             myArray[0] = ""  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getNetworkInfo";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getNetworkInfo.overloads[1].apply(this, arguments);
         };
 
@@ -28,7 +28,7 @@ Java.perform(function () {
             myArray[0] = ""  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getAllNetworkInfo";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getAllNetworkInfo.apply(this, arguments);
         };
 
@@ -37,7 +37,7 @@ Java.perform(function () {
             myArray[0] = ""  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "getActiveNetworkInfo";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.getActiveNetworkInfo.apply(this, arguments);
         };
 
@@ -46,7 +46,7 @@ Java.perform(function () {
             myArray[0] = ""  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "startUsingNetworkFeature";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.startUsingNetworkFeature.apply(this, arguments);
         };
     }

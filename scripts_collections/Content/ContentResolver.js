@@ -11,18 +11,18 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn +"." + "query";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             // if (uri.toString().indexOf("sms") > -1) {
-            //     send("call " + cn + "->query_sms");
+            //     console.log("call " + cn + "->query_sms");
             // }
             // else if (uri.toString().indexOf("contacts") > -1) {
-            //     send("call " + cn + "->query_contacts");
+            //     console.log("call " + cn + "->query_contacts");
             // }
             // else if (uri.toString().indexOf("call") > -1) {
-            //     send("call " + cn + "->query_call_log");
+            //     console.log("call " + cn + "->query_call_log");
             // }
             // else {
-            //     send("call " + cn + "->query");
+            //     console.log("call " + cn + "->query");
             // }
             return this.query.overloads[0].apply(this, arguments);
         };
@@ -32,7 +32,7 @@ Java.perform(function() {
             myArray[0] = "INTERESTED"  //INTERESTED & SENSITIVE
             myArray[1] = cn +"." + "delete";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.delete.apply(this, arguments);
         };
     }

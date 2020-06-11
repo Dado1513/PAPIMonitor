@@ -5,50 +5,50 @@ Java.perform(function() {
     var cn = "android.telephony.SmsManager";
     var smsManager = Java.use(cn);
     if (smsManager) {
-        //hook sendTextMessage
-        smsManager.sendTextMessage.overloads[0].implementation = function(dest) {
+        //hook console.logTextMessage
+        smsManager.console.logTextMessage.overloads[0].implementation = function(dest) {
             var myArray=new Array()
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
-            myArray[1] = cn + "." + "sendTextMessage";
+            myArray[1] = cn + "." + "console.logTextMessage";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
-            return this.sendTextMessage.overloads[0].apply(this, arguments);
+            console.log(myArray);
+            return this.console.logTextMessage.overloads[0].apply(this, arguments);
         };
-        //hook sendDataMessage
-        smsManager.sendDataMessage.overloads[0].implementation = function(dest) {
+        //hook console.logDataMessage
+        smsManager.console.logDataMessage.overloads[0].implementation = function(dest) {
             var myArray=new Array()
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
-            myArray[1] = cn + "." + "sendDataMessage";
+            myArray[1] = cn + "." + "console.logDataMessage";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
-            return this.sendDataMessage.overloads[0].apply(this, arguments);
+            console.log(myArray);
+            return this.console.logDataMessage.overloads[0].apply(this, arguments);
         };
-        //hook sendMultipartTextMessage
-        smsManager.sendMultipartTextMessage.overloads[0].implementation = function(dest) {
+        //hook console.logMultipartTextMessage
+        smsManager.console.logMultipartTextMessage.overloads[0].implementation = function(dest) {
             var myArray=new Array()
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
-            myArray[1] = cn + "." + "sendMultipartTextMessage";
+            myArray[1] = cn + "." + "console.logMultipartTextMessage";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
-            return this.sendMultipartTextMessage.overloads[0].apply(this, arguments);
-        };
-
-        smsManager.sendTextMessage.overloads[0].implementation = function(dest) {
-            var myArray=new Array()
-            myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
-            myArray[1] = cn + "." + "sendTextMessage";
-            myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
-            return this.sendTextMessage.overloads[0].apply(this, arguments);
+            console.log(myArray);
+            return this.console.logMultipartTextMessage.overloads[0].apply(this, arguments);
         };
 
-        smsManager.sendTextMessage.overloads[0].implementation = function(dest) {
+        smsManager.console.logTextMessage.overloads[0].implementation = function(dest) {
             var myArray=new Array()
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
-            myArray[1] = cn + "." + "sendTextMessage";
+            myArray[1] = cn + "." + "console.logTextMessage";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
-            return this.sendTextMessage.overloads[0].apply(this, arguments);
+            console.log(myArray);
+            return this.console.logTextMessage.overloads[0].apply(this, arguments);
+        };
+
+        smsManager.console.logTextMessage.overloads[0].implementation = function(dest) {
+            var myArray=new Array()
+            myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
+            myArray[1] = cn + "." + "console.logTextMessage";
+            myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
+            console.log(myArray);
+            return this.console.logTextMessage.overloads[0].apply(this, arguments);
         };
 
         smsManager.divideMessage.implementation = function(dest) {
@@ -56,7 +56,7 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "divideMessage";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.divideMessage.apply(this, arguments);
         };
 
@@ -65,17 +65,17 @@ Java.perform(function() {
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
             myArray[1] = cn + "." + "downloadMultimediaMessage";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
+            console.log(myArray);
             return this.downloadMultimediaMessage.apply(this, arguments);
         };
 
-        smsManager.sendMultimediaMessage.implementation = function(dest) {
+        smsManager.console.logMultimediaMessage.implementation = function(dest) {
             var myArray=new Array()
             myArray[0] = "SENSITIVE"  //INTERESTED & SENSITIVE
-            myArray[1] = cn + "." + "sendMultimediaMessage";
+            myArray[1] = cn + "." + "console.logMultimediaMessage";
             myArray[2] = Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()).split('\n\tat');
-            send(myArray);
-            return this.sendMultimediaMessage.apply(this, arguments);
+            console.log(myArray);
+            return this.console.logMultimediaMessage.apply(this, arguments);
         };
     }
 });
