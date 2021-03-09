@@ -3,10 +3,12 @@ import json
 from datetime import datetime
 import argparse
 from rich import print
+from rich.console import Console
 from loguru import logger
+import json
 from utils import *
 
-
+console = Console()
 file_log_frida = os.path.join(os.getcwd(), "logs")
 
 
@@ -29,7 +31,8 @@ def on_message(message, data):
                 message_dict = json.loads(message["payload"])
             else:
                 file_log.write(str(message["payload"]) + "\n")
-                print(f"[bold green]{message['payload']}[/bold green]")
+                # print(f"[bold green]{json.loads(message['payload'])}[/bold green]")
+                console.log(json.loads(message["payload"]))
                 # logger.info(str(message["payload"])+"\n")
                 return
         else:
@@ -37,7 +40,8 @@ def on_message(message, data):
         if "Error" not in str(message_dict):
             message_dict["time"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             file_log.write(str(message_dict) + "\n")
-            print(f"[bold green]{message['payload']}[/bold green]")
+            # print(f"[bold green]{json.loads(message['payload'])}[/bold green]")
+            console.log(json.loads(message["payload"]))
             # logger.info(str(message_dict)+"\n")
     file_log.close()
 
@@ -125,7 +129,7 @@ def main_v2(
         api.apimonitor(api_monitor)
 
     while True:
-        command = input("Press 0 to exit\n\nApi Invoked:\n")
+        command = input("Press 0 to exit\n\n")
         if command == "0":
             break
 
@@ -180,7 +184,7 @@ def main_v1(app_path, list_api_to_monitoring, app_to_install=True, store_script=
     device.resume(pid)
     start = time.time()
     while True:
-        command = input("Press 0 to exit\n\nApi Invoked:\n")
+        command = input("Press 0 to exit\n\n")
         if command == "0":
             break
 
