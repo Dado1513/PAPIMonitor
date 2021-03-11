@@ -31,18 +31,14 @@ def on_message(message, data):
                 message_dict = json.loads(message["payload"])
             else:
                 file_log.write(str(message["payload"]) + "\n")
-                # print(f"[bold green]{json.loads(message['payload'])}[/bold green]")
                 console.log(json.loads(message["payload"]))
-                # logger.info(str(message["payload"])+"\n")
                 return
         else:
             message_dict = message["payload"]
         if "Error" not in str(message_dict):
             message_dict["time"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             file_log.write(str(message_dict) + "\n")
-            # print(f"[bold green]{json.loads(message['payload'])}[/bold green]")
             console.log(json.loads(message["payload"]))
-            # logger.info(str(message_dict)+"\n")
     file_log.close()
 
 
