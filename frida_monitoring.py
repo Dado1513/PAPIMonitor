@@ -9,7 +9,7 @@ import json
 from utils import *
 
 console = Console()
-file_log_frida = os.path.join(os.getcwd(), "logs")
+file_log_frida = os.path.join(os.path.dirname(__file__), "logs")
 
 
 def on_message(message, data):
@@ -98,7 +98,7 @@ def main_v2(
         dir_frida, "monitoring_api_frida_{}.txt".format(package_name.replace(".", "_"))
     )
 
-    with open(os.path.join(os.getcwd(), "frida_script_v2", "default.js")) as f:
+    with open(os.path.join(__file__, "api_android_monitor", "default.js")) as f:
         frida_code = f.read()
 
     script = session.create_script(frida_code)
@@ -115,7 +115,9 @@ def main_v2(
 
     if "NONE" not in category:
         with open(
-            os.path.join(os.getcwd(), "frida_script_v2", "api_monitor.json")
+            os.path.join(
+                os.path.dirname(__file__), "api_android_monitor", "api_monitor.json"
+            )
         ) as f:
             api_monitor = api_monitor + json.load(f)
 
@@ -168,7 +170,9 @@ def main_v1(app_path, list_api_to_monitoring, app_to_install=True, store_script=
     )
     script_frida = create_script_frida(
         list_api_to_monitoring,
-        os.path.join(os.getcwd(), "frida_scripts", "frida_script_template.js"),
+        os.path.join(
+            os.path.dirname(__file__), "api_android_monitor", "frida_script_template.js"
+        ),
     )
     if store_script:
         file_script_frida = os.path.join(
@@ -439,8 +443,8 @@ if __name__ == "__main__":
             "api_personalized_2.txt[/bold]"
         )
         print(
-            "[bold][*] Usage: python frida_monitoring.py -v 2 --package-name com.example.analyticsapptesting --list-api "
-            "api_personalized_1.txt api_personalized_2.txt[/bold]"
+            "[bold][*] Usage: python frida_monitoring.py -v 2 --package-name com.example.analyticsapptesting "
+            "--list-api api_personalized_1.txt api_personalized_2.txt[/bold]"
         )
         print(
             "[bold][*] Usage: python frida_monitoring.py -v 2 --package-name com.example.analyticsapptesting[/bold]"

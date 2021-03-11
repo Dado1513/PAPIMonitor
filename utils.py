@@ -17,7 +17,7 @@ def push_and_start_frida_server(adb: ADB):
 
     """
     frida_server = os.path.join(
-        os.getcwd(), "resources", "frida-server", "frida-server"
+        os.path.dirname(__file__), "resources", "frida-server", "frida-server"
     )
 
     try:
