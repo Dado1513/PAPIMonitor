@@ -1,1 +1,8 @@
 com.pay4vend.bapp.main.MainActivity,h1
+com.pay4vend.bapp.oldapp.SecurePreferences,b
+com.pay4vend.bapp.oldapp.SecurePreferences,e
+com.pay4vend.bapp.oldapp.SecurePreferences,g
+android.content.SharedPreferences,getString
+android.content.SharedPreferences,getInt
+com.pay4vend.bapp.classes.RecoverDevice,getDeviceUserCredit
+defpackage.o73,d

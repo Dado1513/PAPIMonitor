@@ -31,14 +31,20 @@ def on_message(message, data):
                 message_dict = json.loads(message["payload"])
             else:
                 file_log.write(str(message["payload"]) + "\n")
-                console.log(json.loads(message["payload"]))
+                try:
+                    console.log(json.loads(message["payload"]))
+                except json.decoder.JSONDecodeError as e:
+                    pass
                 return
         else:
             message_dict = message["payload"]
         if "Error" not in str(message_dict):
             message_dict["time"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             file_log.write(str(message_dict) + "\n")
-            console.log(json.loads(message["payload"]))
+            try:
+                console.log(json.loads(message["payload"]))
+            except json.decoder.JSONDecodeError as e:
+                    pass
     file_log.close()
 
 
@@ -94,7 +100,7 @@ def main_v2(
         dir_frida, "monitoring_api_frida_{}.txt".format(package_name.replace(".", "_"))
     )
 
-    with open(os.path.join(__file__, "api_android_monitor", "default.js")) as f:
+    with open(os.path.join(os.path.dirname(__file__), "api_android_monitor", "default.js")) as f:
         frida_code = f.read()
 
     script = session.create_script(frida_code)
