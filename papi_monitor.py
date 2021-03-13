@@ -203,16 +203,16 @@ def get_cmd_args(args: list = None):
     """
 
     parser = argparse.ArgumentParser(
-        prog="python dynamic API monitoring based on Frida",
+        prog="Python API Monitor for Android apps",
         description="Start dynamic API monitoring",
         usage="""
-            python frida_monitoring.py -v 1 --file-apk app.apk --list-api api_personalized_1.txt api_personalized_2.txt
-            python frida_monitoring.py -v 1 --package-name com.example.analyticsapptesting --list-api api_personalized_1.txt api_personalized_2.txt
-            python frida_monitoring.py -v 2 --package-name com.example.analyticsapptesting
-            python frida_monitoring.py -v 2 --file-apk app.apk --list-api api_personalized_1.txt api_personalized_2.txt
-            python frida_monitoring.py -v 2 --package-name com.example.analyticsapptesting --list-api api_personalized_1.txt api_personalized_2.txt
-            python frida_monitoring.py -v 2 --package-name com.example.analyticsapptesting
-            python frida_monitoring.py -v 2 --package-name com.example.app --list-api api_personalized.txt api_personalized_2.txt --store-script True --filter "Crypto" "Crypto - Hash"
+            python papi_monitor.py -v 1 --file-apk app.apk --list-api api_personalized_1.txt api_personalized_2.txt
+            python papi_monitor.py -v 1 --package-name com.example.analyticsapptesting --list-api api_personalized_1.txt api_personalized_2.txt
+            python papi_monitor.py -v 2 --package-name com.example.analyticsapptesting
+            python papi_monitor.py -v 2 --file-apk app.apk --list-api api_personalized_1.txt api_personalized_2.txt
+            python papi_monitor.py -v 2 --package-name com.example.analyticsapptesting --list-api api_personalized_1.txt api_personalized_2.txt
+            python papi_monitor.py -v 2 --package-name com.example.analyticsapptesting
+            python papi_monitor.py -v 2 --package-name com.example.app --list-api api_personalized.txt api_personalized_2.txt --store-script True --filter "Crypto" "Crypto - Hash"
 
         """,
         formatter_class=argparse.RawTextHelpFormatter,
