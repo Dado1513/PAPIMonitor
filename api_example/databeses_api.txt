@@ -1,11 +1,38 @@
-android.database.sqlite.SQLiteDatabase,execSQL
-android.database.sqlite.SQLiteDatabase,insert
-android.database.sqlite.SQLiteDatabase,delete
-android.database.sqlite.SQLiteDatabase,update
-android.database.sqlite.SQLiteOpenHelper,onCreate
-android.database.sqlite.SQLiteOpenHelper,getWritableDatabase
-android.database.sqlite.SQLiteQueryBuilder,setTables
-android.content.ContentProvider,insert
-android.content.ContentProvider,update
-android.content.ContentProvider,delete
-android.content.ContentProvider,query
+[
+    {
+        "className": "android.database.sqlite.SQLiteDatabase",
+        "methodName": "execSQL",
+        "thisObject": false,
+        "category": "sql"
+    },
+    {
+        "className": "android.database.sqlite.SQLiteDatabase",
+        "methodName": "insert",
+        "thisObject": false,
+        "category": "sql"
+    },
+    {
+        "className": "android.database.sqlite.SQLiteDatabase",
+        "methodName": "delete",
+        "thisObject": false,
+        "category": "sql"
+    },
+    {
+        "className": "android.database.sqlite.SQLiteDatabase",
+        "methodName": "update",
+        "thisObject": false,
+        "category": "sql"
+    },
+    {
+        "className": "android.database.sqlite.SQLiteOpenHelper",
+        "methodName": "onCreate",
+        "thisObject": false,
+        "category": "sql"
+    },
+    {
+        "className": "android.database.sqlite.SQLiteOpenHelper",
+        "methodName": "getWritableDatabase",
+        "thisObject": false,
+        "category": "sql"
+    }
+]

@@ -287,13 +287,14 @@ rpc.exports = {
     },
     apimonitor: function (api_to_monitor) {
       Java.perform(function () {
+        // https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security/blob/master/agent/RMS_core.js
         /* DEBUG
-        api_to_monitor.forEach(function (e) {
-          console.log(e["Category"]);
-          e["hooks"].forEach(function (hook) {
-            console.log("--> "+hook["clazz"]+" - "+hook["method"]);
+          api_to_monitor.forEach(function (e) {
+            console.log(e["Category"]);
+            e["hooks"].forEach(function (hook) {
+              console.log("--> "+hook["clazz"]+" - "+hook["method"]);
+            });
           });
-        });
         */
         api_to_monitor.forEach(function (e) {
           e["hooks"].forEach(function (hook) {
@@ -349,14 +350,14 @@ rpc.exports = {
       }
     );
   }
-  
+
   function javadynamichook(hook, category, callback) {
     var Exception = Java.use('java.lang.Exception');
     var toHook;
     try {
       var clazz = hook.clazz;
       var method = hook.method;
-  
+
       try {
         if (hook.target &&
           parseInt(Java.androidVersion, 10) < hook.target) {
@@ -385,8 +386,8 @@ rpc.exports = {
               class: clazz,
               method: method,
               args: args,
-              calledFrom: calledFrom
-              //result: retval ? retval.toString() : null,
+              calledFrom: calledFrom,
+              result: retval ? retval.toString() : "N/A",
             };
             retval = callback(retval, to_print);
           }

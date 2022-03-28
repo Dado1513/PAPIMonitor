@@ -1,7 +1,38 @@
-com.facebook.appevents.AppEventsLogger,logEvent
-com.facebook.appevents.AppEventQueue,persistToDisk
-com.facebook.appevents.AppEventQueue,flushAndWait
-com.facebook.appevents.AppEventQueue,add
-com.facebook.appevents.AppEventQueue,sendEventsToServer
-com.facebook.appevents.AppEventQueue,buildRequestForSession
-com.facebook.appevents.AppEventQueue,handleResponse
+[
+  {
+    "className": "com.facebook.appevents.AppEventsLogger",
+    "methodName": "logEvent",
+    "thisObject": false,
+    "category": "analytics"
+  },
+  {
+    "className": "com.facebook.appevents.AppEventQueue",
+    "methodName": "persistToDisk",
+    "thisObject": false,
+    "category": "analytics"
+  },
+  {
+    "className": "com.facebook.appevents.AppEventQueue",
+    "methodName": "flushAndWait",
+    "thisObject": false,
+    "category": "analytics"
+  },
+  {
+    "className": "com.facebook.appevents.AppEventQueue",
+    "methodName": "add",
+    "thisObject": false,
+    "category": "analytics"
+  },
+  {
+    "className": "com.facebook.appevents.AppEventQueue",
+    "methodName": "buildRequestForSession",
+    "thisObject": false,
+    "category": "analytics"
+  },
+  {
+    "className": "com.facebook.appevents.AppEventQueue",
+    "methodName": "handleResponse",
+    "thisObject": false,
+    "category": "analytics"
+  },
+]

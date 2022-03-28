@@ -1,2 +1,14 @@
-android.webkit.WebView,loadUrl
-android.webkit.WebView,evaluateJavascript
+[
+    {
+        "className": "android.webkit.WebView",
+        "methodName": "loadUrl",
+        "thisObject": false,
+        "category": "WebView"
+    },
+    {
+        "className": "android.webkit.WebView",
+        "methodName": "evaluateJavascript",
+        "thisObject": false,
+        "category": "WebView"
+    }
+]

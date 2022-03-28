@@ -1,12 +1,10 @@
 import frida
-import json
 from datetime import datetime
 import argparse
 from rich import print
 from rich.console import Console
-from loguru import logger
-import json
 from utils import *
+from loguru import logger
 
 console = Console()
 file_log_frida = os.path.join(os.path.dirname(__file__), "logs")
@@ -50,29 +48,29 @@ def on_message(message, data):
 
 def main(
     app_path: str,
-    list_api_to_monitoring: str = None,
-    app_to_install: bool = True,
-    store_script: bool = False,
-    category=["ALL"],
+    api_monitor_file : str = None,
+    is_app_to_install: bool = True,
+    is_google_emulator: bool = False,
+    category: list = ["NONE"],
 ):
     """
 
     Parameters
     ----------
     app_path
-    list_api_to_monitoring
-    app_to_install
-    store_script
+    api_monitor_file
+    is_app_to_install
+    is_google_emulator
     category
 
     Returns
     -------
 
     """
-    if app_to_install:
-        package_name = install_app_and_install_frida(app_path=app_path)
+    if is_app_to_install:
+        package_name = install_app_and_install_frida(app_path=app_path, is_google_emulator=is_google_emulator)
     else:
-        package_name = create_adb_and_start_frida(package_name=app_path)
+        package_name = create_adb_and_start_frida(package_name=app_path, is_google_emulator=is_google_emulator)
 
     pid = None
     device = None
@@ -83,13 +81,12 @@ def main(
         pid = device.spawn([package_name])
         session = device.attach(pid)
     except Exception as e:
-
         logger.error("Error {}".format(e))
         device = frida.get_usb_device()
         pid = device.spawn([package_name])
         session = device.attach(pid)
 
-    logger.info("Succesfully attacched frida to app")
+    logger.debug("Succesfully attacched frida to app")
 
     global file_log_frida
     dir_frida = os.path.join(file_log_frida, package_name.replace(".", "_"))
@@ -110,14 +107,17 @@ def main(
     script.load()
     device.resume(pid)
     api = script.exports
-
     api_monitor = []
-    if list_api_to_monitoring is not None:
-        json_custom = create_json_custom(list_api_to_monitoring)
-        api_monitor.append(json_custom)
-        category.append("Custom")
 
+    if api_monitor_file is not None:
+        json_api_monitor = create_json_api_monitor(api_monitor_file)
+        if json_api_monitor is not None:
+            api_monitor.append(json_api_monitor)
+            # append all category
+            for e in json_api_monitor:
+                category.append(e["Category"])
     if "NONE" not in category:
+        # add api_monitor default
         with open(
             os.path.join(
                 os.path.dirname(__file__), "api_android_monitor", "api_monitor.json"
@@ -125,9 +125,11 @@ def main(
         ) as f:
             api_monitor = api_monitor + json.load(f)
 
+        # remove app filtered
         if "ALL" not in category:
             api_filter = [e for e in api_monitor if e["Category"] in category]
             api_to_hook = json.loads(json.dumps(api_filter))
+            # logger.info(api_to_hook)
             api.apimonitor(api_to_hook)
         else:
             api.apimonitor(api_monitor)
@@ -151,13 +153,11 @@ def get_cmd_args(args: list = None):
         prog="Python API Monitor for Android apps",
         description="Start dynamic API monitoring",
         usage="""
-            python papi_monitor.py -v 1 --file-apk app.apk --list-api api_personalized_1.txt api_personalized_2.txt
-            python papi_monitor.py -v 1 --package-name com.example.analyticsapptesting --list-api api_personalized_1.txt api_personalized_2.txt
-            python papi_monitor.py -v 2 --package-name com.example.analyticsapptesting
-            python papi_monitor.py -v 2 --file-apk app.apk --list-api api_personalized_1.txt api_personalized_2.txt
-            python papi_monitor.py -v 2 --package-name com.example.analyticsapptesting --list-api api_personalized_1.txt api_personalized_2.txt
-            python papi_monitor.py -v 2 --package-name com.example.analyticsapptesting
-            python papi_monitor.py -v 2 --package-name com.example.app --list-api api_personalized.txt api_personalized_2.txt --store-script True --filter "Crypto" "Crypto - Hash"
+            python papi_monitor.py --package-name com.package.name --filter "Crypto"
+            python papi_monitor.py --file-apk app.apk --api-monitor api_personalized_1.txt
+            python papi_monitor.py --package-name com.package.name --api-monitor api_personalized_1.txt
+            python papi_monitor.py --package-name com.package.name --filter "ALL"
+            python papi_monitor.py --package-name com.package.name --list-api api_personalized.txt --store-script True --filter "Crypto" "Crypto - Hash"
 
         """,
         formatter_class=argparse.RawTextHelpFormatter,
@@ -167,16 +167,6 @@ def get_cmd_args(args: list = None):
         "-f", "--file-apk", type=str, metavar="APK", help="file apk to analyze"
     )
 
-    # parser.add_argument(
-    #     "-v",
-    #     "--version",
-    #     type=str,
-    #     metavar="VERSION",
-    #     choices=["1", "2"],
-    #     required=True,
-    #     help="Version API Monitoring,\n -v 1 => Original,\n -v 2 => Based on https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security",
-    # )
-
     parser.add_argument(
         "-p",
         "--package-name",
@@ -185,17 +175,12 @@ def get_cmd_args(args: list = None):
         help="Package Name of app to analyze",
     )
     parser.add_argument(
-        "--list-api",
+        "--api-monitor",
         type=str,
         metavar="API",
-        nargs="+",
-        help="List of api file to monitoring, \ne.g., file_api.txt",
+        help="File that contain the list of API to monitoring, \ne.g., hooks.json",
     )
-    parser.add_argument(
-        "--api",
-        type=str,
-        help="Single API to Monitoring, \ne.g., android.webkit.WebView,loadUrl",
-    )
+
     parser.add_argument(
         "--filter",
         type=str,
@@ -225,110 +210,58 @@ def get_cmd_args(args: list = None):
         default=["NONE"],
     )
     parser.add_argument("--store-script", type=bool, default=False)
-
+    parser.add_argument("--google-emulator", action="store_true")
     return parser.parse_args(args)
 
 
 if __name__ == "__main__":
 
     arguments = get_cmd_args()
-    if arguments.file_apk is not None:
-        app_path = arguments.file_apk
-        if os.path.exists(app_path):
-            logger.info("Start Frida API Monitoring with App Installation")
+    app = None
+    is_app_to_install = False
 
-            if arguments.list_api is not None:
-                list_file_api_to_monitoring = arguments.list_api
-                list_api_to_monitoring = create_list_api_from_file(
-                    list_file_api_to_monitoring
-                )
-                main(
-                    app_path,
-                    list_api_to_monitoring,
-                    app_to_install=True,
-                    store_script=arguments.store_script,
-                    category=arguments.filter,
-                )
-            elif arguments.api is not None:
-                list_api_to_monitoring = []
-                list_api_to_monitoring.append(
-                    (arguments.api.split(",")[0], arguments.api.split(",")[1])
-                )
-                main(
-                    app_path,
-                    list_api_to_monitoring,
-                    app_to_install=True,
-                    store_script=arguments.store_script,
-                    category=arguments.filter,
-                )
-            else:
-                main(
-                    app_path,
-                    None,
-                    app_to_install=True,
-                    store_script=arguments.store_script,
-                    category=arguments.filter,
-                )
-        else:
-            print(f"[bold red]File {app_path} not found[/bold red]")
-
+    if arguments.file_apk is not None and os.path.exists(arguments.file_apk):
+        logger.info("Start PAPIMonitor with App Installation")
+        app = arguments.file_apk
+        is_app_to_install = True
     elif arguments.package_name is not None:
-        logger.info("Start Frida API Monitoring without App Installation")
-        package_name = arguments.package_name
-        if arguments.list_api is not None:
-            list_file_api_to_monitoring = arguments.list_api
-            list_api_to_monitoring = create_list_api_from_file(
-                list_file_api_to_monitoring
-            )
-            main(
-                package_name,
-                list_api_to_monitoring,
-                app_to_install=False,
-                store_script=arguments.store_script,
-                category=arguments.filter,
-            )
+        logger.info("Start PAPIMonitor without App Installation")
+        app = arguments.package_name
+        is_app_to_install = False
 
-        elif arguments.api is not None:
-            list_api_to_monitoring = []
-            list_api_to_monitoring.append(
-                (arguments.api.split(",")[0], arguments.api.split(",")[1])
-            )
+    if app is not None:
+
+        # if app is not None mean that the app path exist or package name is set
+        if arguments.api_monitor is not None:
+            # argument is a file of API to monitor hook.txt/json
+            monitor_file = arguments.api_monitor
             main(
-                package_name,
-                list_api_to_monitoring,
-                app_to_install=False,
-                store_script=arguments.store_script,
+                app,
+                api_monitor_file=arguments.api_monitor,
+                is_app_to_install=is_app_to_install,
                 category=arguments.filter,
             )
 
         else:
+            # used list api of chosen by user (default is NONE)
             main(
-                package_name,
+                app,
                 None,
-                app_to_install=False,
-                store_script=arguments.store_script,
+                is_app_to_install=is_app_to_install,
                 category=arguments.filter,
             )
+
     else:
         print(
-            "[bold][*] Usage: python frida_monitoring.py -v 1 --file-apk app.apk --list-api api_personalized_1.txt "
-            "api_personalized_2.txt[/bold]"
+            "[bold][*] Usage: python papi_monitor.py --package-name com.package.name[/bold]"
         )
         print(
-            "[bold][*] Usage: python frida_monitoring.py -v 1 --package-name com.example.analyticsapptesting "
-            "--list-api api_personalized_1.txt api_personalized_2.txt[/bold]"
+            "[bold][*] Usage: python papi_monitor.py --file-apk app.apk --list-api api_personalized_1.txt [/bold]"
         )
         print(
-            "[bold][*] Usage: python frida_monitoring.py -v 2 --package-name com.example.analyticsapptesting[/bold]"
+            "[bold][*] Usage: python papi_monitor.py --package-name com.package.name "
+            "--api-monitor api_personalized_1.txt [/bold]"
         )
         print(
-            "[bold][*] Usage: python frida_monitoring.py -v 2 --file-apk app.apk --list-api api_personalized_1.txt "
-            "api_personalized_2.txt[/bold]"
-        )
-        print(
-            "[bold][*] Usage: python frida_monitoring.py -v 2 --package-name com.example.analyticsapptesting "
-            "--list-api api_personalized_1.txt api_personalized_2.txt[/bold]"
-        )
-        print(
-            "[bold][*] Usage: python frida_monitoring.py -v 2 --package-name com.example.analyticsapptesting[/bold]"
+            "[bold][*] Usage: python papi_monitor.py --package-name ccom.package.name --filter \"Crypto\" [/bold]"
         )

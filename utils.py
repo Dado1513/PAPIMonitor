@@ -2,6 +2,7 @@ from loguru import logger
 from adb import ADB
 from androguard.core.bytecodes.apk import APK
 import time
+import json
 import os
 
 
@@ -17,7 +18,7 @@ def push_and_start_frida_server(adb: ADB):
 
     """
     frida_server = os.path.join(
-        os.path.dirname(__file__), "resources", "frida-server", "frida-server"
+        os.path.dirname(__file__), "resources", "frida-server-15", "frida-server"
     )
 
     try:
@@ -25,7 +26,6 @@ def push_and_start_frida_server(adb: ADB):
     except Exception as e:
         adb.kill_server()
         logger.error("Error on adb {}".format(e))
-
     logger.info("Push frida server")
     try:
         adb.push_file(frida_server, "/data/local/tmp")
@@ -40,7 +40,43 @@ def push_and_start_frida_server(adb: ADB):
     time.sleep(4)
 
 
-def install_app_and_install_frida(app_path):
+def push_and_start_frida_server_google_emulator(adb: ADB):
+    """
+
+    Parameters
+    ----------
+    adb
+
+    Returns
+    -------
+
+    """
+    frida_server = os.path.join(
+        os.path.dirname(__file__), "resources", "frida-server-15", "frida-server"
+    )
+
+    logger.info("Push frida-server")
+    try:
+        adb.push_file(frida_server, "/sdcard")
+        adb.shell_su("mv /sdcard/frida-server /data/local/tmp/frida-server")
+    except Exception as e:
+        pass
+
+    cmd_set_enforce = "setenforce 0"
+    adb.shell_su(cmd_set_enforce)
+
+    cmd_enforce_echo = "echo 0 > /sys/fs/selinux/enforce"
+    adb.shell_su(cmd_enforce_echo)
+
+    chmod_frida = "chmod 755 /data/local/tmp/frida-server"
+    adb.shell_su(chmod_frida)
+    logger.info("Start frida server")
+    start_frida = "/data/local/tmp/frida-server &"
+    adb.shell_su(start_frida, is_async=True)
+    time.sleep(4)
+
+
+def install_app_and_install_frida(app_path, is_google_emulator: bool = False):
     """
         Install app and Frida script
     Parameters
@@ -57,8 +93,11 @@ def install_app_and_install_frida(app_path):
     adb = ADB()
     logger.info("Install APP")
     adb.install_app(app_path)
-    logger.info("Frida Initialize")
-    push_and_start_frida_server(adb)
+    logger.info("Frida Initialized")
+    # if not is_google_emulator:
+    #    push_and_start_frida_server(adb)
+    # else:
+    #    push_and_start_frida_server_google_emulator(adb)
     return package_name
 
 
@@ -88,25 +127,7 @@ def create_script_frida(list_api_to_monitoring: list, path_frida_script_template
     return script_frida
 
 
-def create_list_api_from_file(list_file_api_to_monitoring):
-    """
-
-    Parameters
-    ----------
-    list_file_api_to_monitoring
-
-    Returns
-    -------
-
-    """
-    list_api_to_monitoring_complete = list()
-    for file_api_to_monitoring in list_file_api_to_monitoring:
-        list_api_to_monitoring = read_api_to_monitoring(file_api_to_monitoring)
-        list_api_to_monitoring_complete.extend(list_api_to_monitoring)
-    return list_api_to_monitoring_complete
-
-
-def create_adb_and_start_frida(package_name):
+def create_adb_and_start_frida(package_name, is_google_emulator: bool = False):
     """
 
     Parameters
@@ -117,10 +138,13 @@ def create_adb_and_start_frida(package_name):
     -------
 
     """
-    logger.info(f"App Already Installed, start to monitoring ${package_name}")
+    logger.debug(f"App Already Installed, start to monitoring ${package_name}")
     adb = ADB()
-    logger.info("Frida Initialize")
-    push_and_start_frida_server(adb)
+    logger.debug("Frida Initialize")
+    # if not is_google_emulator:
+    #    push_and_start_frida_server(adb)
+    # else:
+    #    push_and_start_frida_server_google_emulator(adb)
     return package_name
 
 
@@ -142,6 +166,49 @@ def create_json_custom(list_api_to_monitoring):
         dict_category_custom["hooks"].append(dict_method)
 
     return dict_category_custom
+
+
+def create_json_api_monitor(json_list_api_file: str):
+    """
+
+    Parameters
+    ----------
+    json_list_api_file
+
+    Returns
+    -------
+
+    """
+
+    if not os.path.exists(json_list_api_file):
+        return None
+
+    # load file
+    json_list_api = json.load(open(json_list_api_file, "r"))
+
+    api_monitor = []
+    dict_template = {"Category": "", "HookType": "Java", "hooks": []}
+    dict_data_category = {}
+    for api in json_list_api:
+        category = api["category"]
+        clazz = api["className"]
+        method = api["methodName"]
+        if category.lower() in dict_data_category.keys():
+            monitor_api_config = dict_data_category[category.lower()]
+            monitor_api_config["hooks"].append({"clazz": clazz, "method": method})
+            dict_data_category[category.lower()] = monitor_api_config
+        else:
+            monitor_api_config = dict_template
+            monitor_api_config["Category"] = category.lower()
+            monitor_api_config["hooks"].append({"clazz": clazz, "method": method})
+            dict_data_category[category.lower()] = monitor_api_config
+
+    for key, item in dict_data_category.items():
+        api_monitor.append(item)
+    return api_monitor
+
+
+
 
 
 def read_api_to_monitoring(file_api_to_monitoring):
