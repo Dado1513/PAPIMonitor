@@ -1,0 +1,578 @@
+[
+  {
+    "className": "java.security.SecureRandom",
+    "methodName": "setSeed",
+    "thisObject": false,
+    "category": "crypto"
+  },
+  {
+    "className": "javax.crypto.spec.SecretKeySpec",
+    "methodName": null,
+    "thisObject": false,
+    "category": "crypto"
+  },
+  {
+    "className": "javax.crypto.spec.PBEKeySpec",
+    "methodName": null,
+    "thisObject": false,
+    "category": "crypto"
+  },
+  {
+    "className": "javax.crypto.Cipher",
+    "methodName": "doFinal",
+    "thisObject": true,
+    "category": "crypto"
+  },
+  {
+    "className": "javax.crypto.Cipher",
+    "methodName": "getIV",
+    "thisObject": true,
+    "category": "crypto"
+  },
+  {
+    "className": "javax.crypto.Cipher",
+    "methodName": "getInstance",
+    "thisObject": true,
+    "category": "crypto"
+  },
+  {
+    "className": "javax.crypto.Mac",
+    "methodName": "doFinal",
+    "thisObject": false,
+    "category": "crypto"
+  },
+  {
+    "className": "android.app.SharedPreferencesImpl$EditorImpl",
+    "methodName": "putString",
+    "thisObject": false,
+    "category": "globals"
+  },
+  {
+    "className": "android.app.SharedPreferencesImpl$EditorImpl",
+    "methodName": "putBoolean",
+    "thisObject": false,
+    "category": "globals"
+  },
+  {
+    "className": "android.app.SharedPreferencesImpl$EditorImpl",
+    "methodName": "putInt",
+    "thisObject": false,
+    "category": "globals"
+  },
+  {
+    "className": "android.app.SharedPreferencesImpl$EditorImpl",
+    "methodName": "putLong",
+    "thisObject": false,
+    "category": "globals"
+  },
+  {
+    "className": "android.app.SharedPreferencesImpl$EditorImpl",
+    "methodName": "putFloat",
+    "thisObject": false,
+    "category": "globals"
+  },
+  {
+    "className": "android.content.ContentValues",
+    "methodName": "put",
+    "thisObject": false,
+    "category": "globals"
+  },
+  {
+    "className": "libcore.io.IoBridge",
+    "methodName": "open",
+    "thisObject": false,
+    "category": "file"
+  },
+  {
+    "className": "android.app.ApplicationPackageManager",
+    "methodName": "setComponentEnabledSetting",
+    "thisObject": false,
+    "category": "generic"
+  },
+  {
+    "className": "android.app.NotificationManager",
+    "methodName": "notify",
+    "thisObject": false,
+    "category": "generic"
+  },
+  {
+    "className": "android.util.Base64",
+    "methodName": "decode",
+    "thisObject": false,
+    "category": "generic"
+  },
+  {
+    "className": "android.telephony.TelephonyManager",
+    "methodName": "listen",
+    "thisObject": false,
+    "category": "generic"
+  },
+  {
+    "className": "android.util.Base64",
+    "methodName": "encode",
+    "thisObject": false,
+    "category": "generic"
+  },
+  {
+    "className": "android.util.Base64",
+    "methodName": "encodeToString",
+    "thisObject": false,
+    "category": "generic"
+  },
+  {
+    "className": "android.net.ConnectivityManager",
+    "methodName": "setMobileDataEnabled",
+    "thisObject": false,
+    "category": "generic"
+  },
+  {
+    "className": "android.content.BroadcastReceiver",
+    "methodName": "abortBroadcast",
+    "thisObject": false,
+    "category": "generic"
+  },
+  {
+    "className": "java.lang.Runtime",
+    "methodName": "exec",
+    "thisObject": false,
+    "category": "runtime"
+  },
+  {
+    "className": "java.lang.ProcessBuilder",
+    "methodName": "start",
+    "thisObject": true,
+    "category": "runtime"
+  },
+  {
+    "className": "java.io.FileOutputStream",
+    "methodName": "write",
+    "thisObject": false,
+    "category": "runtime"
+  },
+  {
+    "className": "java.io.FileInputStream",
+    "methodName": "read",
+    "thisObject": false,
+    "category": "runtime"
+  },
+  {
+    "className": "android.app.ActivityManager",
+    "methodName": "killBackgroundProcesses",
+    "thisObject": false,
+    "category": "runtime"
+  },
+  {
+    "className": "android.os.Process",
+    "methodName": "killProcess",
+    "thisObject": false,
+    "category": "runtime"
+  },
+  {
+    "className": "android.app.ContextImpl",
+    "methodName": "registerReceiver",
+    "thisObject": false,
+    "category": "ipc"
+  },
+  {
+    "className": "android.app.ContextImpl",
+    "methodName": "startService",
+    "thisObject": false,
+    "category": "ipc"
+  },
+  {
+    "className": "android.app.ContextImpl",
+    "methodName": "bindService",
+    "thisObject": false,
+    "category": "ipc"
+  },
+  {
+    "className": "android.app.ContextImpl",
+    "methodName": "sendBroadcast",
+    "thisObject": false,
+    "category": "ipc"
+  },
+  {
+    "className": "android.app.ContextImpl",
+    "methodName": "sendOrderedBroadcast",
+    "thisObject": false,
+    "category": "ipc"
+  },
+  {
+    "className": "android.app.ContextImpl",
+    "methodName": "sendStickyBroadcast",
+    "thisObject": false,
+    "category": "ipc"
+  },
+  {
+    "className": "android.app.ActivityThread",
+    "methodName": "handleReceiver",
+    "thisObject": false,
+    "category": "ipc"
+  },
+  {
+    "className": "android.app.Activity",
+    "methodName": "startActivity",
+    "thisObject": false,
+    "category": "ipc"
+  },
+  {
+    "className": "android.app.Activity",
+    "methodName": "startActivities",
+    "thisObject": false,
+    "category": "ipc"
+  },
+  {
+    "className": "android.app.Activity",
+    "methodName": "startActivityForResult",
+    "thisObject": false,
+    "category": "ipc"
+  },
+  {
+    "className": "android.telephony.TelephonyManager",
+    "methodName": "getDeviceId",
+    "thisObject": false,
+    "category": "fingerprint"
+  },
+  {
+    "className": "android.telephony.TelephonyManager",
+    "methodName": "getSubscriberId",
+    "thisObject": false,
+    "category": "fingerprint"
+  },
+  {
+    "className": "android.telephony.TelephonyManager",
+    "methodName": "getLine1Number",
+    "thisObject": false,
+    "category": "fingerprint"
+  },
+  {
+    "className": "android.telephony.TelephonyManager",
+    "methodName": "getNetworkOperator",
+    "thisObject": false,
+    "category": "fingerprint"
+  },
+  {
+    "className": "android.telephony.TelephonyManager",
+    "methodName": "getNetworkOperatorName",
+    "thisObject": false,
+    "category": "fingerprint"
+  },
+  {
+    "className": "android.telephony.TelephonyManager",
+    "methodName": "getSimOperatorName",
+    "thisObject": false,
+    "category": "fingerprint"
+  },
+  {
+    "className": "android.net.wifi.WifiInfo",
+    "methodName": "getMacAddress",
+    "thisObject": false,
+    "category": "fingerprint"
+  },
+  {
+    "className": "android.telephony.TelephonyManager",
+    "methodName": "getSimCountryIso",
+    "thisObject": false,
+    "category": "fingerprint"
+  },
+  {
+    "className": "android.telephony.TelephonyManager",
+    "methodName": "getSimSerialNumber",
+    "thisObject": false,
+    "category": "fingerprint"
+  },
+  {
+    "className": "android.telephony.TelephonyManager",
+    "methodName": "getNetworkCountryIso",
+    "thisObject": false,
+    "category": "fingerprint"
+  },
+  {
+    "className": "android.telephony.TelephonyManager",
+    "methodName": "getDeviceSoftwareVersion",
+    "thisObject": false,
+    "category": "fingerprint"
+  },
+  {
+    "className": "android.os.Debug",
+    "methodName": "isDebuggerConnected",
+    "thisObject": false,
+    "category": "fingerprint"
+  },
+  {
+    "className": "dalvik.system.BaseDexClassLoader",
+    "methodName": "findResource",
+    "thisObject": false,
+    "category": "dex"
+  },
+  {
+    "className": "dalvik.system.BaseDexClassLoader",
+    "methodName": "findLibrary",
+    "thisObject": false,
+    "category": "dex"
+  },
+  {
+    "className": "dalvik.system.DexFile",
+    "methodName": "loadDex",
+    "thisObject": false,
+    "category": "dex"
+  },
+  {
+    "className": "dalvik.system.DexClassLoader",
+    "methodName": null,
+    "thisObject": false,
+    "category": "dex"
+  },
+  {
+    "className": "dalvik.system.BaseDexClassLoader",
+    "methodName": "findResources",
+    "thisObject": false,
+    "category": "dex"
+  },
+  {
+    "className": "dalvik.system.DexFile",
+    "methodName": "loadClass",
+    "thisObject": false,
+    "category": "dex"
+  },
+  {
+    "className": "dalvik.system.DexFile",
+    "methodName": null,
+    "thisObject": false,
+    "category": "dex"
+  },
+  {
+    "className": "dalvik.system.PathClassLoader",
+    "methodName": null,
+    "thisObject": false,
+    "category": "dex"
+  },
+  {
+    "className": "java.lang.reflect.Method",
+    "methodName": "invoke",
+    "thisObject": false,
+    "category": "reflection"
+  },
+  {
+    "className": "android.telephony.SmsManager",
+    "methodName": "sendTextMessage",
+    "thisObject": false,
+    "category": "sms"
+  },
+  {
+    "className": "android.telephony.SmsManager",
+    "methodName": "sendMultipartTextMessage",
+    "thisObject": false,
+    "category": "sms"
+  },
+  {
+    "className": "android.content.ContentResolver",
+    "methodName": "query",
+    "thisObject": false,
+    "category": "content"
+  },
+  {
+    "className": "android.content.ContentResolver",
+    "methodName": "registerContentObserver",
+    "thisObject": false,
+    "category": "content"
+  },
+  {
+    "className": "android.content.ContentResolver",
+    "methodName": "insert",
+    "thisObject": false,
+    "category": "content"
+  },
+  {
+    "className": "android.accounts.AccountManager",
+    "methodName": "getAccountsByType",
+    "thisObject": false,
+    "category": "content"
+  },
+  {
+    "className": "android.accounts.AccountManager",
+    "methodName": "getAccounts",
+    "thisObject": false,
+    "category": "content"
+  },
+  {
+    "className": "android.location.Location",
+    "methodName": "getLatitude",
+    "thisObject": false,
+    "category": "content"
+  },
+  {
+    "className": "android.location.Location",
+    "methodName": "getLongitude",
+    "thisObject": false,
+    "category": "content"
+  },
+  {
+    "className": "android.content.ContentResolver",
+    "methodName": "delete",
+    "thisObject": false,
+    "category": "content"
+  },
+  {
+    "className": "android.media.AudioRecord",
+    "methodName": "startRecording",
+    "thisObject": false,
+    "category": "content"
+  },
+  {
+    "className": "android.media.MediaRecorder",
+    "methodName": "start",
+    "thisObject": false,
+    "category": "content"
+  },
+  {
+    "className": "android.os.SystemProperties",
+    "methodName": "get",
+    "thisObject": false,
+    "category": "content"
+  },
+  {
+    "className": "android.app.ApplicationPackageManager",
+    "methodName": "getInstalledPackages",
+    "thisObject": false,
+    "category": "content"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "create",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "delete",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "deleteDatabase",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "execSQL",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "getPath",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "insert",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "insertOrThrow",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "insertWithOnConflict",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "openDatabase",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "openOrCreateDatabase",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "query",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "queryWithFactory",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "rawQuery",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "rawQueryWithFactory",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "replace",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "replaceOrThrow",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "update",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.database.sqlite.SQLiteDatabase",
+    "methodName": "updateWithOnConflict",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.app.ContextImpl",
+    "methodName": "getDatabasePath",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "android.app.ContextImpl",
+    "methodName": "openOrCreateDatabase",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "net.sqlcipher.database.SQLiteDatabase",
+    "methodName": "execSQL",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "net.sqlcipher.database.SQLiteDatabase",
+    "methodName": "openOrCreateDatabase",
+    "thisObject": false,
+    "category": "sql"
+  },
+  {
+    "className": "net.sqlcipher.database.SQLiteDatabase",
+    "methodName": "rawQuery",
+    "thisObject": false,
+    "category": "sql"
+  }
+]

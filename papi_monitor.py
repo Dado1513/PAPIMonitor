@@ -44,15 +44,15 @@ def on_message(message, data):
             try:
                 console.log(json.loads(message["payload"]))
             except json.decoder.JSONDecodeError as e:
-                    pass
+                pass
     file_log.close()
 
 
-def main_v2(
-    app_path,
-    list_api_to_monitoring=None,
-    app_to_install=True,
-    store_script=False,
+def main(
+    app_path: str,
+    list_api_to_monitoring: str = None,
+    app_to_install: bool = True,
+    store_script: bool = False,
     category=["ALL"],
 ):
     """
@@ -70,9 +70,9 @@ def main_v2(
 
     """
     if app_to_install:
-        package_name = install_app_and_install_frida(app_path)
+        package_name = install_app_and_install_frida(app_path=app_path)
     else:
-        package_name = create_adb_and_start_frida(app_path)
+        package_name = create_adb_and_start_frida(package_name=app_path)
 
     pid = None
     device = None
@@ -100,7 +100,9 @@ def main_v2(
         dir_frida, "monitoring_api_frida_{}.txt".format(package_name.replace(".", "_"))
     )
 
-    with open(os.path.join(os.path.dirname(__file__), "api_android_monitor", "default.js")) as f:
+    with open(
+        os.path.join(os.path.dirname(__file__), "api_android_monitor", "default.js")
+    ) as f:
         frida_code = f.read()
 
     script = session.create_script(frida_code)
@@ -138,63 +140,6 @@ def main_v2(
             break
 
 
-def main_v1(app_path, list_api_to_monitoring, app_to_install=True, store_script=False):
-
-    if app_to_install:
-        package_name = install_app_and_install_frida(app_path)
-    else:
-        package_name = create_adb_and_start_frida(app_path)
-
-    pid = None
-    device = None
-    session = None
-
-    try:
-        device = frida.get_usb_device()
-        pid = device.spawn([package_name])
-        session = device.attach(pid)
-
-    except Exception as e:
-        logger.error("Error {}".format(e))
-        device = frida.get_usb_device()
-        pid = device.spawn([package_name])
-        session = device.attach(pid)
-
-    logger.info(f"Succesfully attacched frida to the app {package_name}")
-
-    global file_log_frida
-    dir_frida = os.path.join(file_log_frida, package_name.replace(".", "_"))
-    if not os.path.exists(dir_frida):
-        os.makedirs(dir_frida)
-
-    file_log_frida = os.path.join(
-        dir_frida, "monitoring_api_frida_{}.txt".format(package_name.replace(".", "_"))
-    )
-    script_frida = create_script_frida(
-        list_api_to_monitoring,
-        os.path.join(
-            os.path.dirname(__file__), "api_android_monitor", "frida_script_template.js"
-        ),
-    )
-    if store_script:
-        file_script_frida = os.path.join(
-            dir_frida, "script_{}.js".format(package_name.replace(".", "_"))
-        )
-        with open(file_script_frida, "w") as file:
-            file.write(script_frida)
-
-    script = session.create_script(script_frida.strip().replace("\n", ""))
-    script.on("message", on_message)
-    script.load()
-
-    device.resume(pid)
-    start = time.time()
-    while True:
-        command = input("Press 0 to exit\n\n")
-        if command == "0":
-            break
-
-
 def get_cmd_args(args: list = None):
     """
     Parse and return the command line parameters needed for the script execution.
@@ -222,15 +167,15 @@ def get_cmd_args(args: list = None):
         "-f", "--file-apk", type=str, metavar="APK", help="file apk to analyze"
     )
 
-    parser.add_argument(
-        "-v",
-        "--version",
-        type=str,
-        metavar="VERSION",
-        choices=["1", "2"],
-        required=True,
-        help="Version API Monitoring,\n -v 1 => Original,\n -v 2 => Based on https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security",
-    )
+    # parser.add_argument(
+    #     "-v",
+    #     "--version",
+    #     type=str,
+    #     metavar="VERSION",
+    #     choices=["1", "2"],
+    #     required=True,
+    #     help="Version API Monitoring,\n -v 1 => Original,\n -v 2 => Based on https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security",
+    # )
 
     parser.add_argument(
         "-p",
@@ -273,7 +218,7 @@ def get_cmd_args(args: list = None):
             "Java Native Interface",
             "Command",
             "Process",
-            "FileSytem - Java",
+            "FileSystem - Java",
             "ALL",
             "NONE",
         ],
@@ -287,147 +232,83 @@ def get_cmd_args(args: list = None):
 if __name__ == "__main__":
 
     arguments = get_cmd_args()
-    if arguments.version == "1":
-        if arguments.file_apk is not None:
-            app_path = arguments.file_apk
-            if os.path.exists(app_path):
-                logger.info("Start Frida API Monitoring with App Installation")
+    if arguments.file_apk is not None:
+        app_path = arguments.file_apk
+        if os.path.exists(app_path):
+            logger.info("Start Frida API Monitoring with App Installation")
 
-                if arguments.list_api is not None:
-                    list_file_api_to_monitoring = arguments.list_api
-                    list_api_to_monitoring = create_list_api_from_file(
-                        list_file_api_to_monitoring
-                    )
-                    main_v1(
-                        app_path,
-                        list_api_to_monitoring,
-                        app_to_install=True,
-                        store_script=arguments.store_script,
-                    )
-
-                elif arguments.api is not None:
-                    list_api_to_monitoring = []
-                    list_api_to_monitoring.append(
-                        (arguments.api.split(",")[0], arguments.api.split(",")[1])
-                    )
-                    main_v1(
-                        app_path,
-                        list_api_to_monitoring,
-                        app_to_install=True,
-                        store_script=arguments.store_script,
-                    )
-
-                else:
-                    arguments.print_help()
-            else:
-                print(f"[bold red]File {app_path} not found[/bold red]")
-
-        elif arguments.package_name is not None:
-            logger.info("Start Frida API Monitoring without App Installation")
-            package_name = arguments.package_name
             if arguments.list_api is not None:
                 list_file_api_to_monitoring = arguments.list_api
                 list_api_to_monitoring = create_list_api_from_file(
                     list_file_api_to_monitoring
                 )
-                main_v1(
-                    package_name,
+                main(
+                    app_path,
                     list_api_to_monitoring,
-                    app_to_install=False,
+                    app_to_install=True,
                     store_script=arguments.store_script,
+                    category=arguments.filter,
                 )
             elif arguments.api is not None:
                 list_api_to_monitoring = []
                 list_api_to_monitoring.append(
                     (arguments.api.split(",")[0], arguments.api.split(",")[1])
                 )
-                main_v1(
-                    package_name,
+                main(
+                    app_path,
                     list_api_to_monitoring,
-                    app_to_install=False,
-                    store_script=arguments.store_script,
-                )
-            else:
-                arguments.print_help()
-
-    elif arguments.version == "2":
-        if arguments.file_apk is not None:
-            app_path = arguments.file_apk
-            if os.path.exists(app_path):
-                logger.info("Start Frida API Monitoring with App Installation")
-
-                if arguments.list_api is not None:
-                    list_file_api_to_monitoring = arguments.list_api
-                    list_api_to_monitoring = create_list_api_from_file(
-                        list_file_api_to_monitoring
-                    )
-                    main_v2(
-                        app_path,
-                        list_api_to_monitoring,
-                        app_to_install=True,
-                        store_script=arguments.store_script,
-                        category=arguments.filter,
-                    )
-                elif arguments.api is not None:
-                    list_api_to_monitoring = []
-                    list_api_to_monitoring.append(
-                        (arguments.api.split(",")[0], arguments.api.split(",")[1])
-                    )
-                    main_v2(
-                        app_path,
-                        list_api_to_monitoring,
-                        app_to_install=True,
-                        store_script=arguments.store_script,
-                        category=arguments.filter,
-                    )
-                else:
-                    main_v2(
-                        app_path,
-                        None,
-                        app_to_install=True,
-                        store_script=arguments.store_script,
-                        category=arguments.filter,
-                    )
-            else:
-                print(f"[bold red]File {app_path} not found[/bold red]")
-
-        elif arguments.package_name is not None:
-            logger.info("Start Frida API Monitoring without App Installation")
-            package_name = arguments.package_name
-            if arguments.list_api is not None:
-                list_file_api_to_monitoring = arguments.list_api
-                list_api_to_monitoring = create_list_api_from_file(
-                    list_file_api_to_monitoring
-                )
-                main_v2(
-                    package_name,
-                    list_api_to_monitoring,
-                    app_to_install=False,
+                    app_to_install=True,
                     store_script=arguments.store_script,
                     category=arguments.filter,
                 )
-
-            elif arguments.api is not None:
-                list_api_to_monitoring = []
-                list_api_to_monitoring.append(
-                    (arguments.api.split(",")[0], arguments.api.split(",")[1])
-                )
-                main_v2(
-                    package_name,
-                    list_api_to_monitoring,
-                    app_to_install=False,
-                    store_script=arguments.store_script,
-                    category=arguments.filter,
-                )
-
             else:
-                main_v2(
-                    package_name,
+                main(
+                    app_path,
                     None,
-                    app_to_install=False,
+                    app_to_install=True,
                     store_script=arguments.store_script,
                     category=arguments.filter,
                 )
+        else:
+            print(f"[bold red]File {app_path} not found[/bold red]")
+
+    elif arguments.package_name is not None:
+        logger.info("Start Frida API Monitoring without App Installation")
+        package_name = arguments.package_name
+        if arguments.list_api is not None:
+            list_file_api_to_monitoring = arguments.list_api
+            list_api_to_monitoring = create_list_api_from_file(
+                list_file_api_to_monitoring
+            )
+            main(
+                package_name,
+                list_api_to_monitoring,
+                app_to_install=False,
+                store_script=arguments.store_script,
+                category=arguments.filter,
+            )
+
+        elif arguments.api is not None:
+            list_api_to_monitoring = []
+            list_api_to_monitoring.append(
+                (arguments.api.split(",")[0], arguments.api.split(",")[1])
+            )
+            main(
+                package_name,
+                list_api_to_monitoring,
+                app_to_install=False,
+                store_script=arguments.store_script,
+                category=arguments.filter,
+            )
+
+        else:
+            main(
+                package_name,
+                None,
+                app_to_install=False,
+                store_script=arguments.store_script,
+                category=arguments.filter,
+            )
     else:
         print(
             "[bold][*] Usage: python frida_monitoring.py -v 1 --file-apk app.apk --list-api api_personalized_1.txt "
