@@ -23,6 +23,7 @@ def on_message(message, data):
 
     """
     file_log = open(file_log_frida, "a")
+    # logger.debug(message)
     if message["type"] == "send":
         if type(message["payload"]) is str:
             if "API Monitor" not in message["payload"]:
@@ -112,7 +113,7 @@ def main(
     if api_monitor_file is not None:
         json_api_monitor = create_json_api_monitor(api_monitor_file)
         if json_api_monitor is not None:
-            api_monitor.append(json_api_monitor)
+            api_monitor.extend(json_api_monitor)
             # append all category
             for e in json_api_monitor:
                 category.append(e["Category"])
@@ -135,7 +136,6 @@ def main(
             api.apimonitor(api_monitor)
     else:
         api.apimonitor(api_monitor)
-
     while True:
         command = input("Press 0 to exit\n\n")
         if command == "0":

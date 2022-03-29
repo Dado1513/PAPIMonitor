@@ -331,10 +331,6 @@
         {
           "clazz": "com.android.okhttp.internal.huc.HttpURLConnectionImpl",
           "method": "getInputStream"
-        },
-        {
-          "clazz": "com.android.okhttp.internal.huc.HttpURLConnectionImpl",
-          "method": "getInputStream"
         }
       ]
     },

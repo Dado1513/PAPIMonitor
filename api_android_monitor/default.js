@@ -126,6 +126,7 @@ rpc.exports = {
       return loaded_methods;
     },
     hookclassesandmethods: function (loaded_classes, loaded_methods, template) {
+
       Java.perform(function () {
   
         console.log("Hook Template setup")
@@ -286,51 +287,41 @@ rpc.exports = {
       return hto;
     },
     apimonitor: function (api_to_monitor) {
-      Java.perform(function () {
-        // https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security/blob/master/agent/RMS_core.js
-        /* DEBUG
+      if (Java.available) {
+        Java.perform(function () {
           api_to_monitor.forEach(function (e) {
-            console.log(e["Category"]);
             e["hooks"].forEach(function (hook) {
-              console.log("--> "+hook["clazz"]+" - "+hook["method"]);
-            });
-          });
-        */
-        api_to_monitor.forEach(function (e) {
-          e["hooks"].forEach(function (hook) {
-            // Java or Native Hook?
-  
-            // Native - File System only at the moment
-            if (e["HookType"] == "Native") {
-              nativedynamichook(hook, e["Category"]);
-            }
-  
-            // Java 
-            if (e["HookType"] == "Java") {
-              javadynamichook(hook, e["Category"], function (realRetval, to_print) {
-                to_print.returnValue = realRetval
-  
-                //check if type object if yes convert it to string
-                if (realRetval && typeof realRetval === 'object') {
-                  var retval_string = [];
-                  for (var k = 0, l = realRetval.length; k < l; k++) {
-                    retval_string.push(realRetval[k]);
+              // Java or Native Hook?
+              // Native - File System only at the moment
+              if (e["HookType"] == "Native") {
+                nativedynamichook(hook, e["Category"]);
+              }
+
+              // Java
+              if (e["HookType"] == "Java") {
+                javadynamichook(hook, e["Category"], function (realRetval, to_print) {
+                  to_print.returnValue = realRetval
+
+                  //check if type object if yes convert it to string
+                  if (realRetval && typeof realRetval === 'object') {
+                    var retval_string = [];
+                    for (var k = 0, l = realRetval.length; k < l; k++) {
+                      retval_string.push(realRetval[k]);
+                    }
+                    to_print.returnValue = '' + retval_string.join('');
                   }
-                  to_print.returnValue = '' + retval_string.join('');
-                }
-                if (!to_print.result) to_print.result = undefined
-                if (!to_print.returnValue) to_print.returnValue = undefined
-  
-                send(JSON.stringify(to_print));
-                return realRetval;
-              });
-            } // end javadynamichook
-  
+                  if (!to_print.result) to_print.result = undefined
+                  if (!to_print.returnValue) to_print.returnValue = undefined
+                  send(JSON.stringify(to_print));
+                  return realRetval;
+                });
+              } // end javadynamichook
+            });
+
           });
-  
-        });
-  
-      })
+
+        })
+      }
     }
   };
   
@@ -351,30 +342,135 @@ rpc.exports = {
     );
   }
 
+  function enumerateClassLoaded(){
+    var classes = Java.enumerateLoadedClassesSync();
+    classes = classes.sort();
+    for(var i=0; i < classes.length; i++ ) {
+      try {
+        // console.log(classes[i]);
+        // send("[API Monitor] Class Found "+ JSON.stringify(classes[i]));
+        var clazz = Java.use(classes[i]);
+        // send("API Monitor" + classes[i] + " Found")
+        var methods = clazz.class.getMethods();
+        for (var i = 0; i < methods.length; i++) {
+            send("[API Monitor] class: "+ classes[i] + " method: " + methods[i].toString())
+        }
+      } catch (e){
+        continue
+        // console.log(classes[i] + " Not Found")
+      }
+    }
+  }
+
+
   function javadynamichook(hook, category, callback) {
+
+    // console.log(hook.clazz);
+    // console.log(hook.method);
+
+
+    /*
+    var classFactory;
+    const classLoaders = Java.enumerateClassLoadersSync();
+    for (var i=0; i< classLoaders.length; i++) {
+      try {
+        // console.log(classLoaders[classLoader]);
+        classLoaders[classLoaders[i]].findClass(hook.clazz);
+        classFactory = Java.ClassFactory.get(classLoaders[i]);
+        break;
+      } catch (e) {
+        continue;
+      }
+    }
+    */
+
+
+
+    // enumerateClassLoaded();
+
     var Exception = Java.use('java.lang.Exception');
     var toHook;
     try {
       var clazz = hook.clazz;
       var method = hook.method;
-
       try {
         if (hook.target &&
           parseInt(Java.androidVersion, 10) < hook.target) {
-          send('API Monitor - Android Version not supported - Cannot hook - ' + clazz + '.' + method)
+          console.log('[API Monitor] - Android Version not supported - Cannot hook - ' + clazz + '.' + method);
           return
         }
+
         // Check if class and method is available
-        toHook = Java.use(clazz)[method];
+        // console.log(JSON.stringify(classFactory))
+
+        try {
+          console.log(clazz)
+          // var clazzJava =  Java.use(clazz);
+          var clazzJava = Java.registerClass({"name": clazz})
+          console.log(method)
+          toHook = clazzJava[method];
+          // toHook = classFactory.use(clazz)[method];
+          // console.log(clazz)
+
+          // console.log(Object.getOwnPropertyNames(clazzJava.__proto__).join('\n'))
+          /*
+          var methods = clazzJava.class.getDeclaredMethods();
+          if (Object.getOwnPropertyNames(clazzJava).includes(hook.method)) {
+            console.log("method: "+hook.method);
+            console.log("clazz:" + clazz);
+            console.log(Object.getOwnPropertyNames(clazzJava))
+            // clazzJava
+            try {
+              toHook = clazzJava[hook.method];
+              // console.log(toHook);
+            }catch (e) {
+              console.log(e)
+              toHook = undefined
+            }
+          }
+          */
+          // for (var m in methods){
+            // console.log("methods: " + methods[m]);
+            // console.log("m: "+methods[m].toString());
+            // var methodName = methods[m].toString().split("(")[0].split(".").pop()
+
+            // clazzJava.$dispose;
+            // console.log(JSON.stringify(clazzJava.class[methodName]));
+            // console.log(method_name)
+            // console.log(JSON.stringify(clazzJava[m]))
+            // console.log()
+          // }
+          // var clazzJava = classFactory.use(clazz)
+
+          // console.log(clazz)
+          // var clazzJava = Java.registerClass({"name": clazz})
+          // console.log(clazzJava.class.getMethods())
+          // console.log(method)
+          // console.log(clazzJava.class.getMethods())
+
+          // if (method != null && method != "null") {
+            // console.log("clazzJava: "+ clazzJava)
+            // console.log("before: "+ method);
+            // console.log("after: "+ method);
+          // }
+
+          // console.log(toHook + "FOUND")
+
+        } catch (e){
+
+          console.log("Not found")
+          toHook = false;
+        }
         if (!toHook) {
-          send('API Monitor - Cannot find ' + clazz + '.' + method);
+          console.log('[API Monitor] - Cannot find ' + clazz + '.' + method);
           return
         }
       } catch (err) {
-        send('API Monitor - Cannot find ' + clazz + '.' + method);
+        console.log('[API Monitor] - Cannot find ' + clazz + '.' + method);
         return
       }
       for (var i = 0; i < toHook.overloads.length; i++) {
+        console.log("Hooked: "+toHook.overloads[i])
         toHook.overloads[i].implementation = function () {
           var args = [].slice.call(arguments);
           // Call original method
@@ -395,6 +491,6 @@ rpc.exports = {
         }
       }
     } catch (err) {
-      send('API Monitor - ERROR: ' + clazz + "." + method + " [\"Error\"] => " + err);
+      console.log('[API Monitor] - ERROR: ' + clazz + "." + method + " [\"Error\"] => " + err);
     }
   }

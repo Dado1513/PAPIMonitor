@@ -1,0 +1,8 @@
+[
+  {
+    "className": "android.widget.Toast",
+    "methodName": "makeText",
+    "thisObject": false,
+    "category": "generic"
+  }
+]

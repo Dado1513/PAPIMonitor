@@ -187,20 +187,26 @@ def create_json_api_monitor(json_list_api_file: str):
     json_list_api = json.load(open(json_list_api_file, "r"))
 
     api_monitor = []
-    dict_template = {"Category": "", "HookType": "Java", "hooks": []}
+    dict_template = {"Category": "",  "HookType": "Java", "hooks": []}
     dict_data_category = {}
     for api in json_list_api:
+
         category = api["category"]
         clazz = api["className"]
         method = api["methodName"]
-        if category.lower() in dict_data_category.keys():
-            monitor_api_config = dict_data_category[category.lower()]
-            monitor_api_config["hooks"].append({"clazz": clazz, "method": method})
-            dict_data_category[category.lower()] = monitor_api_config
+        # logger.debug(f"{category} {clazz} {method}")
+
+        if category.lower() in dict_data_category:
+            dict_data_category[category.lower()]["hooks"].append({"clazz": clazz, "method": method})
+            # monitor_api_config["hooks"].append({"clazz": clazz, "method": method})
+            # dict_data_category[category.lower()] = monitor_api_config
+
         else:
-            monitor_api_config = dict_template
-            monitor_api_config["Category"] = category.lower()
-            monitor_api_config["hooks"].append({"clazz": clazz, "method": method})
+            monitor_api_config = {
+                "Category": category.lower(),
+                "HookType": "Java",
+                "hooks": [{"clazz": clazz, "method": method}]
+            }
             dict_data_category[category.lower()] = monitor_api_config
 
     for key, item in dict_data_category.items():
