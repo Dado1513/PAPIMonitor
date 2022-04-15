@@ -3,6 +3,9 @@
 frida-env/
 logs/
 venv-linux/
+test.sh 
+cert-proxy/
+api-example/api-example-conf.json
 # User-specific stuff:
 .idea/workspace.xml
 .idea/tasks.xml

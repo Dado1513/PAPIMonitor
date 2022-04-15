@@ -1,7 +1,0 @@
-com.facebook.appevents.AppEventsLogger,logEvent
-com.facebook.appevents.AppEventQueue,persistToDisk
-com.facebook.appevents.AppEventQueue,flushAndWait
-com.facebook.appevents.AppEventQueue,add
-com.facebook.appevents.AppEventQueue,sendEventsToServer
-com.facebook.appevents.AppEventQueue,buildRequestForSession
-com.facebook.appevents.AppEventQueue,handleResponse

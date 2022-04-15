@@ -1,2 +1,0 @@
-android.widget.Toast,makeText
-com.dave.popupre.MainActivity,getText

@@ -213,6 +213,18 @@ class ADB(object):
         command.insert(0, "shell")
 
         return self.execute(command, is_async=is_async, timeout=timeout)
+    
+    def shell_su(self, command: str, is_async: bool = False, timeout: Optional[int] = None):
+        if not isinstance(command, str) or any(
+                not isinstance(command_token, str) for command_token in command
+        ):
+            raise TypeError(
+                "The command to execute should be passed as a list of strings"
+            )
+
+        command_list = ["shell", "su", "-c", f"'{command}'"]
+
+        return self.execute(command_list, is_async=is_async, timeout=timeout)
 
     def get_property(self, property_name: str, timeout: Optional[int] = None) -> str:
         """

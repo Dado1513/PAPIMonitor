@@ -1,4 +1,5 @@
-frida-tools==6.0.1
+frida==15.1.7
+frida-tools==10.6.1
 androguard==3.3.5
 rich==9.13.0
 loguru==0.6.0
