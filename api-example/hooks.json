@@ -1,0 +1,28 @@
+[
+    {
+      "className": "android.widget.Toast",
+      "methodName": "makeText",
+      "thisObject": false,
+      "category": "generic"
+    },
+     {
+        "className": "com.scottyab.rootbeer.RootBeerNative",
+        "methodName": "checkForRoot",
+        "thisObject": false,
+        "category": "generic"
+      },
+
+      {
+        "className": "android.webkit.WebView",
+        "methodName": "loadUrl",
+        "thisObject": false,
+        "category": "generic"
+      },
+      {
+        "className": "android.webkit.WebViewClient",
+        "methodName": "onReceivedSslError",
+        "thisObject": false,
+        "category": "generic"
+      }
+
+]

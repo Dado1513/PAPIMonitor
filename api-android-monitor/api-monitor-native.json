@@ -1,0 +1,33 @@
+[
+    {
+        "Category": "FileSytem Native",
+        "HookType": "Native",
+        "Comment": "Hook it alone! Do not combine with other Categories",
+        "hooks": [
+          {
+            "clazz": "libc.so",
+            "method": "open"
+          },
+          {
+            "clazz": "libc.so",
+            "method": "close"
+          },
+          {
+            "clazz": "libc.so",
+            "method": "read"
+          },
+          {
+            "clazz": "libc.so",
+            "method": "write"
+          },
+          {
+            "clazz": "libc.so",
+            "method": "unlink"
+          },
+          {
+            "clazz": "libc.so",
+            "method": "remove"
+          }
+        ]
+      }
+]
