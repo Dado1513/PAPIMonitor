@@ -106,4 +106,5 @@ pip install -r requirements
 ### Frida Script
 
 A lot of Frida Script for Android can be found [here](https://github.com/Dado1513/frida-script-android).
+
 ---
