@@ -1,4 +1,6 @@
-﻿# PAPIMonitor
+![Logo](https://raw.githubusercontent.com/Dado1513/PAPIMonitor/master/papi-monitor.png)
+
+ 
 [![Python Version](https://img.shields.io/badge/Python-3.5%2B-green.svg?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Dado1513/AndroidApiMonitoring/blob/master/LICENSE)
 
