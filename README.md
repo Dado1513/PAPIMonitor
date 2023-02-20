@@ -74,6 +74,8 @@ source env/bin/activate
 pip install -r requirements
 ```
 
+- Download frida-server in `resources/frida-server/`
+
 ## Post Installation
 - adb in path file
 - emulator/device already running and connect
