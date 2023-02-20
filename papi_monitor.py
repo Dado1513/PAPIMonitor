@@ -58,16 +58,7 @@ def on_message(message, data):
             # general message here
             message_dict = message["payload"]
             logger.info("[*]" +str(message_dict))
-
-        #if "Error" not in str(message_dict):
-        #    message_dict["time"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-        #    try:
-        #        console.log(json.loads(message["payload"]))
-        #        api_monitor_hooked.append(message_dict)
-        #    except json.decoder.JSONDecodeError as e:
-        #        logger.info(message["payload"])
-        #        pass
-                
+ 
     
 
 
@@ -159,12 +150,13 @@ def main(
     else:
         api.apimonitor(api_monitor)
     
+    # TODO antiroot_bypass
     if antiroot_bypass:
         api.rootbeerbypass()
         # api.antirootbypass()
         # api.nativefile()
 
-    # bypass pinning
+    # TODO bypass pinning
     if pinning_bypass:
         pass
         # push der certificate
