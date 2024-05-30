@@ -84,6 +84,15 @@ pip install -r requirements
 
 ## Usage
 
+```bash
+python papi_monitor.py --package-name com.package.name --filter "Crypto"
+python papi_monitor.py --file-apk app.apk --api-monitor api_personalized.json
+python papi_monitor.py --package-name com.package.name --api-monitor api_personalized.json
+python papi_monitor.py --package-name com.package.name --filter "ALL"
+python papi_monitor.py --package-name com.package.name ---api-monitor api_personalized.json --store-script True --filter "Crypto" "Crypto - Hash"
+python papi_monitor.py --package-name com.package.name --api-monitor api_personalized.json --pinning-bypass --antiroot-bypass     
+```
+
 ### Predefined Categories
 - Device Data
 - Device Info
